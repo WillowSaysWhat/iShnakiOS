@@ -39,12 +39,12 @@ struct HomeView: View {
                                     .foregroundStyle(.white)
                                     .bold()
                                 Text("Water")
-                                    .foregroundStyle(.red)
+                                    .foregroundStyle(.blue)
                                 Text("200ml")
                                     .foregroundStyle(.white)
                                     .bold()
                                 Text("Steps")
-                                    .foregroundStyle(.red)
+                                    .foregroundStyle(.yellow)
                                 Text("5,000")
                                     .foregroundStyle(.white)
                                     .bold()
@@ -62,6 +62,13 @@ struct HomeView: View {
                
             } // ZStack: - background and ScrollView
         } // NaviagtionStack
+        .onAppear {
+                    Task {
+                        ensureGoalDefaultsExist(context: defaultGoalsContext)
+                        ensureTodayDataExists(context: modelContext)
+                        deleteOldRecords(context: modelContext)
+                    }
+                }
     }
     
 }

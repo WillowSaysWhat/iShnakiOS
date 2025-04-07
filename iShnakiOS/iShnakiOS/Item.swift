@@ -56,6 +56,42 @@ class GoalDefaults {
     }
 }
 
+// ensures that this record exists.
+func ensureGoalDefaultsExist(context: ModelContext) {
+    let existingDefaults = try? context.fetch(FetchDescriptor<GoalDefaults>())
+
+    if existingDefaults?.isEmpty ?? true {
+        let defaultGoals = GoalDefaults()
+        context.insert(defaultGoals)
+        try? context.save()
+        print("Created default GoalDefaults object.")
+    } else {
+        print("GoalDefaults already exists.")
+    }
+}
+
+// used to check that a record is available otherwise makes one.
+func ensureTodayDataExists(context: ModelContext) {
+    let calendar = Calendar.current
+    let startOfToday = calendar.startOfDay(for: Date())
+    let startOfTomorrow = calendar.date(byAdding: .day, value: 1, to: startOfToday)!
+
+    let existing = try? context.fetch(FetchDescriptor<UserData>(
+        predicate: #Predicate {
+            $0.date >= startOfToday && $0.date < startOfTomorrow
+        }
+    ))
+
+    if existing?.isEmpty ?? true {
+        let newEntry = UserData()
+        context.insert(newEntry)
+        try? context.save()
+        print("Created new UserData for today.")
+    } else {
+        print(" UserData for today already exists.")
+    }
+}
+
 // Functions
 
 func deleteOldRecords(context: ModelContext) {

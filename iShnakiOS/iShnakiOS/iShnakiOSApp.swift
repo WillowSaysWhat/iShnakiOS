@@ -38,9 +38,11 @@ struct iShnakiOSApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+               
         }
         .modelContainer(sharedModelContainer)
         .modelContainer(GoalDefaults)
+        
     }
    
 }

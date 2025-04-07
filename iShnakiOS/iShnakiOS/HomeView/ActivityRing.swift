@@ -13,9 +13,14 @@ struct ActivityRing: View {
     var goal: Int
     var colour: Color
     var width: CGFloat
+    var image: String
     
     var body: some View {
         ZStack {
+            Image(systemName: image)
+                .font(.largeTitle)
+                .foregroundColor(colour)
+                
             Circle()
                 .stroke(colour.opacity(0.3), lineWidth: width)
             Circle()
@@ -29,5 +34,5 @@ struct ActivityRing: View {
 }// End
 
 #Preview {
-    ActivityRing(amount: .constant(100), goal: 200, colour: .greenish, width: 30)
+    ActivityRing(amount: .constant(100), goal: 200, colour: .greenish, width: 30, image: "plus")
 }

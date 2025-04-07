@@ -21,7 +21,7 @@ struct FourActivityRings: View {
             
             HStack(spacing: 5) { // Horisontal alignment for top 2 rings
                 
-                ZStack { // activity ring and tap pad over it.
+                
                     
                     //  WATER
                     NavigationLink {
@@ -34,46 +34,50 @@ struct FourActivityRings: View {
                             ActivityRing(amount: Binding(
                                 get: { today.amountofWater},
                                 set: { today.amountofWater = $0 }
-                            ), goal: defaults.waterGoal , colour: .blue, width: ringWidth)
+                            ), goal: defaults.waterGoal , colour: .blue, width: ringWidth, image: "waterbottle.fill")
                             .frame(width: paddingWidth)
                             
                             // Text over activity ring
                             
                             
                         } else {
-                            ActivityRing(amount: .constant(0), goal: 10, colour: .blue, width: ringWidth)
+                            
+                            ActivityRing(amount: .constant(0), goal: 10, colour: .blue, width: ringWidth, image: "waterbottle.fill")
                                 .frame(width: paddingWidth)
                         }
                     }
-                }
-                ZStack { // activity ring and tap pad over it.
-                    
-                    // requests both contextModels - WATER
-                    if let defaults = defaultGoals.first,
-                       let today = data.first(where: { Calendar.current.isDateInToday($0.date) }) {
-                        ActivityRing(amount: Binding(
-                            get: { today.amountofBeverage},
-                            set: { today.amountofBeverage = $0 }
-                        ), goal: defaults.BeverageGoal , colour: .brown, width: ringWidth)
-                        .frame(width: paddingWidth)
-                        
-                        // Text over activity ring
-                        
-                        
-                    } else {
-                        ActivityRing(amount: .constant(0), goal: 10, colour: .brown, width: ringWidth)
-                            .frame(width: paddingWidth)
-                    }
-                    
-                }
                 
-            } // HStack water and bev
-            
-            HStack(spacing: 5) {
-                ZStack { // activity ring Meal.
                     NavigationLink {
                         
                         //WaterView()
+                        
+                    } label: {
+                        
+                        // requests both contextModels - WATER
+                        if let defaults = defaultGoals.first,
+                           let today = data.first(where: { Calendar.current.isDateInToday($0.date) }) {
+                            ActivityRing(amount: Binding(
+                                get: { today.amountofBeverage},
+                                set: { today.amountofBeverage = $0 }
+                            ), goal: defaults.BeverageGoal , colour: .brown, width: ringWidth, image: "cup.and.heat.waves.fill")
+                            .frame(width: paddingWidth)
+                            
+                            // Text over activity ring
+                            
+                            
+                        } else {
+                            ActivityRing(amount: .constant(0), goal: 10, colour: .brown, width: ringWidth, image: "cup.and.heat.waves.fill")
+                                .frame(width: paddingWidth)
+                        }
+                    }
+                    
+            } // HStack water and bev
+            
+            HStack(spacing: 5) {
+                
+                    NavigationLink {
+                        
+                        MealView()
                         
                     } label: {
                         // requests both contextModels - WATER
@@ -82,38 +86,41 @@ struct FourActivityRings: View {
                             ActivityRing(amount: Binding(
                                 get: { today.amountofMeal},
                                 set: { today.amountofMeal = $0 }
-                            ), goal: defaults.mealGoal , colour: .yellow, width: ringWidth)
+                            ), goal: defaults.mealGoal , colour: .yellow, width: ringWidth, image: "fork.knife")
                             .frame(width: paddingWidth)
                             
                             // Text over activity ring
                             
                             
                         } else {
-                            ActivityRing(amount: .constant(0), goal: 10, colour: .yellow, width: ringWidth)
+                            ActivityRing(amount: .constant(0), goal: 10, colour: .yellow, width: ringWidth, image: "fork.knife")
                                 .frame(width: paddingWidth)
                         }
                     }
-                }
-                ZStack { // activity ring and tap pad over it.
-                    
-                    // requests both contextModels - WATER
-                    if let defaults = defaultGoals.first,
-                       let today = data.first(where: { Calendar.current.isDateInToday($0.date) }) {
-                        ActivityRing(amount: Binding(
-                            get: { today.amountofSnack},
-                            set: { today.amountofSnack = $0 }
-                        ), goal: defaults.snackGoal , colour: .red, width: ringWidth)
-                        .frame(width: ringWidth)
+                
+                    NavigationLink {
                         
-                        // Text over activity ring
+                        SnackView()
                         
+                    } label: {
                         
-                    } else {
-                        ActivityRing(amount: .constant(0), goal: 10, colour: .red, width: ringWidth)
-                            .frame(width: paddingWidth)
+                        // requests both contextModels - WATER
+                        if let defaults = defaultGoals.first,
+                           let today = data.first(where: { Calendar.current.isDateInToday($0.date) }) {
+                            ActivityRing(amount: Binding(
+                                get: { today.amountofSnack},
+                                set: { today.amountofSnack = $0 }
+                            ), goal: defaults.snackGoal , colour: .red, width: ringWidth, image: "carrot.fill")
+                            .frame(width: ringWidth)
+                            
+                            // Text over activity ring
+                            
+                            
+                        } else {
+                            ActivityRing(amount: .constant(0), goal: 10, colour: .red, width: ringWidth, image: "carrot.fill")
+                                .frame(width: paddingWidth)
+                        }
                     }
-                    
-                }
             }
             
         }
