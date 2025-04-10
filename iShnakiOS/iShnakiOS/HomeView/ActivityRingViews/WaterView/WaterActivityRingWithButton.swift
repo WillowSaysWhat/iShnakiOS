@@ -10,6 +10,7 @@ import SwiftUI
 struct WaterActivityRingWithButton: View {
     
     @Bindable var userData: UserData
+    @Binding var isTapped: Bool
     let goals: GoalDefaults
     let sizeOfWaterContainer: Int
    
@@ -45,6 +46,7 @@ struct WaterActivityRingWithButton: View {
         .onTapGesture {
             withAnimation(.easeOut(duration: 0.3)) {
                 userData.amountofWater += sizeOfWaterContainer
+                isTapped = true // turns on the UNDO button in water view
             }
         }
     }

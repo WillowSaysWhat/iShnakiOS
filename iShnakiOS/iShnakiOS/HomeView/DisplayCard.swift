@@ -74,7 +74,7 @@ struct DisplayCard: View {
     }
     func goGreenWhenComplete(_ goal: Int, _ data: Int ) -> Color {
         
-            if goal >= data {
+            if data >= goal {
                 return .green
             
             } else {

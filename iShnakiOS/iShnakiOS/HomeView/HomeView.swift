@@ -43,16 +43,15 @@ struct HomeView: View {
                                     .bold()
                                 Text("Water")
                                     .foregroundStyle(.blue)
-                                Text("200ml")
+                                Text(String(data.first?.amountofWater ?? 0) + "ml")
                                     
                                     .bold()
                                 Text("Walking")
                                     .foregroundStyle(.yellow)
                                 Text("2.9km")
-                                    
                                     .bold()
                             } // VStack data text (cal, water, steps)
-                            .padding(.leading)
+                            .padding(.leading, 10)
                             
                             FourActivityRings()
                                 

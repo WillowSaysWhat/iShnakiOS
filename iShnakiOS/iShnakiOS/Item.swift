@@ -15,7 +15,9 @@ final class UserData {
     @Attribute(.unique) var date: Date
     // Actuals
     var caloriesConsumed: Int
-    var waterConsumedML: Int
+    var beverageCalories: Int
+    var mealCalories: Int
+    var snackCalories: Int
     var stepsTaken: Int
     var amountofWater: Int
     var amountofBeverage: Int
@@ -26,7 +28,9 @@ final class UserData {
         
         self.date = Calendar.current.startOfDay(for: Date())
         self.caloriesConsumed = 0
-        self.waterConsumedML = 0
+        self.beverageCalories = 0
+        self.mealCalories = 0
+        self.snackCalories = 0
         self.amountofWater = 0
         self.stepsTaken = 0
         self.amountofBeverage = 0
@@ -118,27 +122,5 @@ func deleteOldRecords(context: ModelContext) {
         }
 }
 
-// MARK: - mock data
 
-extension GoalDefaults {
-    static var mock: GoalDefaults {
-        let mock = GoalDefaults()
-        mock.calorieGoal = 2200
-        mock.waterGoal = 5
-        mock.cupSize = 300
-        return mock
-    }
-}
-
-extension UserData {
-    static var mock: UserData {
-        let mock = UserData()
-        mock.caloriesConsumed = 1800
-        mock.waterConsumedML = 1500
-        mock.stepsTaken = 4500
-        mock.amountofMeal = 3
-        mock.amountofSnack = 2
-        return mock
-    }
-}
 
