@@ -10,31 +10,44 @@ import SwiftData
 
 struct ContentView: View {
     
+    @Environment(\.modelContext) private var modelContext
+    
+    
+    @Query private var data: [UserData]
+    @Query private var defaultGoals: [GoalDefaults]
+    
     @State private var newItemText: String = "Home"
     
-   
+    @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
 
     var body: some View {
-        
-        TabView(selection: $newItemText) {
-            HomeView()
-                .tag("Home")
-                .tabItem {
-                    Image(systemName: "house")
+        NavigationStack {
+            if hasCompletedOnboarding {
+                // Show main TabView
+                TabView(selection: $newItemText) {
+                    HomeView()
+                        .tag("Home")
+                        .tabItem {
+                            Image(systemName: "house")
+                        }
+                    
+                    WeekView()
+                        .tag("Week")
+                        .tabItem {
+                            Image(systemName: "chart.line.uptrend.xyaxis")
+                        }
                 }
-            
-            WeekView()
-                .tag("Week")
-                .tabItem {
-                    Image(systemName: "chart.line.uptrend.xyaxis")
-                }
-        }// tabview
-        
-        
-    } // body
+            } else {
+                // Show onboarding screen
+                OnboardingView(hasCompletedOnboarding: $hasCompletedOnboarding)
+                // OnboardingView(hasCompletedOnboarding: $hasCompletedOnboarding)
+            }
+        }
+    }
+// body
 }// end
 
 #Preview {
     ContentView()
-        
+        .modelContainer(for: [UserData.self, GoalDefaults.self], inMemory: false)
 }

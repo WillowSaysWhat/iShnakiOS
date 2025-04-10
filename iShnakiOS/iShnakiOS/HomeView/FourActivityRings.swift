@@ -49,7 +49,7 @@ struct FourActivityRings: View {
                 
                     NavigationLink {
                         
-                        //WaterView()
+                        BeverageView()
                         
                     } label: {
                         
@@ -104,20 +104,20 @@ struct FourActivityRings: View {
                         
                     } label: {
                         
-                        // requests both contextModels - WATER
                         if let defaults = defaultGoals.first,
                            let today = data.first(where: { Calendar.current.isDateInToday($0.date) }) {
                             ActivityRing(amount: Binding(
                                 get: { today.amountofSnack},
                                 set: { today.amountofSnack = $0 }
-                            ), goal: defaults.snackGoal , colour: .red, width: ringWidth, image: "carrot.fill")
-                            .frame(width: ringWidth)
+                            ), goal: defaults.snackGoal , colour: .red, width: ringWidth, image: "carrot")
+                            .frame(width: paddingWidth)
                             
                             // Text over activity ring
                             
                             
                         } else {
-                            ActivityRing(amount: .constant(0), goal: 10, colour: .red, width: ringWidth, image: "carrot.fill")
+                            
+                            ActivityRing(amount: .constant(0), goal: 10, colour: .red, width: ringWidth, image: "carrot")
                                 .frame(width: paddingWidth)
                         }
                     }
@@ -129,6 +129,5 @@ struct FourActivityRings: View {
 
 #Preview {
     FourActivityRings()
-        .modelContainer(for: UserData.self, inMemory: true)
-        .modelContainer(for: GoalDefaults.self, inMemory: true)
+        .modelContainer(for: [UserData.self, GoalDefaults.self], inMemory: false)
 }

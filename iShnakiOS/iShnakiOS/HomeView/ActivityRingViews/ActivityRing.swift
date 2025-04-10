@@ -9,11 +9,10 @@ import SwiftUI
 
 struct ActivityRing: View {
     @Binding var amount: Int
-    
     var goal: Int
-    var colour: Color
-    var width: CGFloat
-    var image: String
+    let colour: Color
+    let width: CGFloat
+    let image: String
     
     var body: some View {
         ZStack {

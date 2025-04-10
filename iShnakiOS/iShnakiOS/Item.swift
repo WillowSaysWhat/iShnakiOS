@@ -36,13 +36,14 @@ final class UserData {
 }
 
 @Model
-class GoalDefaults {
+final class GoalDefaults {
     var calorieGoal: Int
     var mealGoal: Int
     var snackGoal: Int
     var BeverageGoal: Int
     var waterGoal: Int
     var cupSize: Int
+    var waterBottleSize: Int
     var stepGoal: Int
     
     init() {
@@ -52,7 +53,9 @@ class GoalDefaults {
         mealGoal = 3 // breakfast/lunch/dinner
         snackGoal = 2 // amount of snacks in a day
         BeverageGoal = 2 // amount of coffee/soda in a day/
+        waterBottleSize = 600 // waterbootle size
         stepGoal = 5000 // this is half the recommended daily step goal.
+        
     }
 }
 
@@ -114,3 +117,28 @@ func deleteOldRecords(context: ModelContext) {
             print("❌ Error deleting old metrics: \(error)")
         }
 }
+
+// MARK: - mock data
+
+extension GoalDefaults {
+    static var mock: GoalDefaults {
+        let mock = GoalDefaults()
+        mock.calorieGoal = 2200
+        mock.waterGoal = 5
+        mock.cupSize = 300
+        return mock
+    }
+}
+
+extension UserData {
+    static var mock: UserData {
+        let mock = UserData()
+        mock.caloriesConsumed = 1800
+        mock.waterConsumedML = 1500
+        mock.stepsTaken = 4500
+        mock.amountofMeal = 3
+        mock.amountofSnack = 2
+        return mock
+    }
+}
+

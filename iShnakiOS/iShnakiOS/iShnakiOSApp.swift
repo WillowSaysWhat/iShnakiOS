@@ -10,38 +10,31 @@ import SwiftData
 
 @main
 struct iShnakiOSApp: App {
-    var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            UserData.self,
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
+    // making MyiShnakDB so I can find it on the HD
+    let iShnakContainer: ModelContainer
+    
+    init(){
+        let schema = Schema([UserData.self, GoalDefaults.self.self])
+        let config = ModelConfiguration(schema: schema, url: URL.applicationSupportDirectory.appending(path: "MyiShnakDB.db"))
+        
         do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
+            iShnakContainer = try ModelContainer(for: schema, configurations: config)
+            print(URL.applicationSupportDirectory.path(percentEncoded: false))
         } catch {
-            fatalError("Could not create ModelContainer: \(error)")
+            fatalError("Could not configure container. Error: \(error)")
         }
-    }()
-    var GoalDefaults: ModelContainer = {
-        let schema = Schema([
-            UserData.self,
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
-        do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
-    }()
+        
+        print(URL.applicationSupportDirectory.path(percentEncoded: false))
+    }
 
     var body: some Scene {
         WindowGroup {
+            
             ContentView()
                
         }
-        .modelContainer(sharedModelContainer)
-        .modelContainer(GoalDefaults)
+        .modelContainer(for: [UserData.self, GoalDefaults.self], inMemory: false)
+        
         
     }
    
