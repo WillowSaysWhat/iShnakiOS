@@ -33,7 +33,8 @@ struct iShnakiOSApp: App {
             ContentView()
                
         }
-        .modelContainer(for: [UserData.self, GoalDefaults.self], inMemory: false)
+        .modelContainer(iShnakContainer)
+
         
         
     }

@@ -48,6 +48,9 @@ final class GoalDefaults {
     var waterGoal: Int
     var cupSize: Int
     var waterBottleSize: Int
+    var beverageSize: Int
+    var mealSize: Int
+    var snackSize: Int
     var stepGoal: Int
     
     init() {
@@ -58,69 +61,18 @@ final class GoalDefaults {
         snackGoal = 2 // amount of snacks in a day
         BeverageGoal = 2 // amount of coffee/soda in a day/
         waterBottleSize = 600 // waterbootle size
+        beverageSize = 270
+        mealSize = 450 
+        snackSize = 270 // calories
         stepGoal = 5000 // this is half the recommended daily step goal.
         
     }
 }
 
-// ensures that this record exists.
-func ensureGoalDefaultsExist(context: ModelContext) {
-    let existingDefaults = try? context.fetch(FetchDescriptor<GoalDefaults>())
 
-    if existingDefaults?.isEmpty ?? true {
-        let defaultGoals = GoalDefaults()
-        context.insert(defaultGoals)
-        try? context.save()
-        print("Created default GoalDefaults object.")
-    } else {
-        print("GoalDefaults already exists.")
-    }
-}
 
-// used to check that a record is available otherwise makes one.
-func ensureTodayDataExists(context: ModelContext) {
-    let calendar = Calendar.current
-    let startOfToday = calendar.startOfDay(for: Date())
-    let startOfTomorrow = calendar.date(byAdding: .day, value: 1, to: startOfToday)!
 
-    let existing = try? context.fetch(FetchDescriptor<UserData>(
-        predicate: #Predicate {
-            $0.date >= startOfToday && $0.date < startOfTomorrow
-        }
-    ))
 
-    if existing?.isEmpty ?? true {
-        let newEntry = UserData()
-        context.insert(newEntry)
-        try? context.save()
-        print("Created new UserData for today.")
-    } else {
-        print(" UserData for today already exists.")
-    }
-}
-
-// Functions
-
-func deleteOldRecords(context: ModelContext) {
-    let cutoff = Calendar.current.date(byAdding: .day, value: -7, to: Date())!
-    
-    
-    let request = FetchDescriptor<UserData>(
-            predicate: #Predicate { $0.date < cutoff }
-        )
-        
-        do {
-            let oldRecords: [UserData] = try context.fetch(request)
-            
-            for record in oldRecords {
-                context.delete(record)
-            }
-
-            try context.save()
-        } catch {
-            print("❌ Error deleting old metrics: \(error)")
-        }
-}
 
 
 

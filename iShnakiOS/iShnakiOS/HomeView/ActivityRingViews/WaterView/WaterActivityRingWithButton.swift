@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct WaterActivityRingWithButton: View {
-    
+    @Environment(\.modelContext) private var Context
     @Bindable var userData: UserData
     @Binding var isTapped: Bool
     let goals: GoalDefaults
@@ -20,7 +20,7 @@ struct WaterActivityRingWithButton: View {
     
     var body: some View {
        
-        let progress = min(Double(userData.amountofWater) / Double(goals.waterGoal) , 1.0)
+        let progress = Double(userData.amountofWater) / Double(goals.waterGoal)
         
         ZStack {
             HStack {
@@ -47,6 +47,8 @@ struct WaterActivityRingWithButton: View {
             withAnimation(.easeOut(duration: 0.3)) {
                 userData.amountofWater += sizeOfWaterContainer
                 isTapped = true // turns on the UNDO button in water view
+                try? Context.save()
+                
             }
         }
     }

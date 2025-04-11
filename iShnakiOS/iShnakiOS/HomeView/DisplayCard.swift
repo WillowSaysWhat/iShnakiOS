@@ -21,6 +21,7 @@ struct DisplayCard: View {
         ZStack {
             Color(uiColor: .systemGray6)
                 .cornerRadius(15)
+                .shadow(color: Color(uiColor: .systemGray4), radius: 2)
             
             VStack{
                 HStack(alignment: .top, spacing:8){
@@ -41,8 +42,10 @@ struct DisplayCard: View {
                     .padding()
                     
             }
+            
             .padding()
         }
+        
     }
     // displays the correct string for the current amount. (ml)
     func whichStringToDisplayInProgress(_ checkString: String, _ goal: Int = 99) -> String {

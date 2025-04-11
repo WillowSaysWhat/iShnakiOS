@@ -1,16 +1,18 @@
 //
-//  WaterTrends.swift
+//  BeverageTrends.swift
 //  iShnakiOS
 //
-//  Created by Huw Williams on 10/04/2025.
+//  Created by Huw Williams on 11/04/2025.
 //
 
 import SwiftUI
 
-struct WaterTrends: View {
+struct BeverageTrends: View {
     var sevenDays: [UserData]
     var thirtyDays: [UserData]
-    var goal: Int
+    let goal: Int
+    let postfix: String
+    let keyPath: KeyPath<UserData, Int>
     @State private var weekColor: Color = .gray
     @State private var monthColor: Color = .gray
     
@@ -31,7 +33,7 @@ struct WaterTrends: View {
                     VStack(alignment: .leading) {
                         
                         Text("WEEKLY AVG")
-                        Text(String(Int(averageOverSevenDays / 1000)) + "L")
+                        Text(String(averageOverSevenDays) + postfix)
                             .font(.system(size: 12, weight: .heavy))
                         
                     }
@@ -39,25 +41,23 @@ struct WaterTrends: View {
                     colouredIcon(averageOverThirtyDays)
                     VStack(alignment: .leading) {
                         Text("MONTHLY AVG")
-                        Text(String(Int(averageOverThirtyDays / 1000)) + "L")
+                        Text(String(averageOverThirtyDays) + postfix)
                             .font(.system(size: 12, weight: .heavy))
                         
                         
                     }
                 }
+                .padding()
                 
             }
-            .padding()
         }
         
     }
-    
-    // these two variables could be changed to Ints.
     var averageOverSevenDays: Double {
         var total = 0.0
         var days = 0.0
         for data in sevenDays {
-            total += Double(data.amountofWater)
+            total += Double(data[keyPath: keyPath])
             days += 1
         }
         return total / days
@@ -66,7 +66,7 @@ struct WaterTrends: View {
         var total = 0.0
         var days = 0.0
         for data in thirtyDays {
-            total += Double(data.amountofWater)
+            total += Double(data[keyPath: keyPath])
             days += 1
         }
         return total / days
@@ -93,5 +93,5 @@ struct WaterTrends: View {
 }
 
 #Preview {
-    WaterView()
+    BeverageView()
 }

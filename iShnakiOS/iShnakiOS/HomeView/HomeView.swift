@@ -11,6 +11,11 @@ import SwiftData
 struct HomeView: View {
     @Environment(\.modelContext) private var modelContext
     
+    // get light/dark theme
+    @Environment(\.colorScheme) private var colourScheme
+    var lightOrDarkTheme: Color {
+        colourScheme == .light ? .red : .green
+    }
     // get data
     @Query private var data: [UserData]
     @Query private var defaultGoals: [GoalDefaults]
@@ -31,14 +36,14 @@ struct HomeView: View {
                             
                             Image(systemName: "house")
                                 .font(.title3)
-                                .foregroundStyle(.red)
+                                .foregroundStyle(lightOrDarkTheme)
                             
                         }
                         HStack {
                             VStack(alignment: .leading, spacing: 8) {
                                 Text("Calories")
                                     .foregroundStyle(.red)
-                                Text("210 kcal")
+                                Text(String(data.first?.caloriesConsumed ?? 0))
                                     
                                     .bold()
                                 Text("Water")

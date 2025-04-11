@@ -43,7 +43,11 @@ struct ContentView: View {
                 // OnboardingView(hasCompletedOnboarding: $hasCompletedOnboarding)
             }
         }
+        .onAppear {
+                isThisANewDay()
+            }
     }
+   
     func isThisANewDay(){
         // make timestamp for today
         let calendar = Calendar.current
@@ -58,7 +62,7 @@ struct ContentView: View {
             let newRecord = UserData()
             modelContext.insert(newRecord)
         }else {
-            print("Today'record Already exists")
+            print("Today's record Already exists")
         }
     }
 // body

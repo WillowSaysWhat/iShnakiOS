@@ -10,7 +10,7 @@ import SwiftData
 import Charts
 
 struct WaterView: View {
-    @Environment(\.modelContext) private var defaultGoalsContext
+    @Environment(\.modelContext) private var Context
     // get data
     @Query private var data: [UserData]
     @Query private var defaultGoals: [GoalDefaults]
@@ -85,16 +85,16 @@ struct WaterView: View {
                     label: {
                         
                             Image(systemName: "repeat.circle.fill")
-                                .foregroundStyle((isTapped) ? .gray :.blue)
+                                .foregroundStyle((isTapped) ? .blue :.gray)
                                 .font(.system(size: 40))
                     }
                     .disabled(!isTapped) // disables the button
                 } // undo last drink HStack
                 .padding(.trailing)
-                
-                
             } // Top VStack
             .padding()
+            
+            
             VStack { // History
                 HStack {
                     Text("History")
@@ -105,7 +105,7 @@ struct WaterView: View {
                     Spacer()
                 }
                                 
-                WaterChart7Days(data: last7Days) // at the bottom of the view
+                WaterChart7Days(data: last7Days, keyPath: \.amountofWater) // at the bottom of the view
                 
                 WaterChartMonth(data: lastMonth)
                 
