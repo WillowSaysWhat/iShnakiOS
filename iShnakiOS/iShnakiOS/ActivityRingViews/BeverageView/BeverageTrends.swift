@@ -13,8 +13,7 @@ struct BeverageTrends: View {
     let goal: Int
     let postfix: String
     let keyPath: KeyPath<UserData, Int>
-    @State private var weekColor: Color = .gray
-    @State private var monthColor: Color = .gray
+    
     
     
     // filtered data is at the bottom of the view
@@ -29,20 +28,26 @@ struct BeverageTrends: View {
                     .font(.system(size: 12, weight: .heavy))
                     .bold()
                 HStack{
-                    colouredIcon(averageOverSevenDays)
+                    chevron(averageOverSevenDays)
+                        .foregroundStyle(.brown)
                     VStack(alignment: .leading) {
                         
                         Text("WEEKLY AVG")
+                            .foregroundStyle(.brown)
                         Text(String(averageOverSevenDays) + postfix)
                             .font(.system(size: 12, weight: .heavy))
+                            .foregroundStyle(.brown)
                         
                     }
                     Spacer()
-                    colouredIcon(averageOverThirtyDays)
+                    chevron(averageOverThirtyDays)
+                        .foregroundStyle(.brown)
                     VStack(alignment: .leading) {
                         Text("MONTHLY AVG")
+                            .foregroundStyle(.brown)
                         Text(String(averageOverThirtyDays) + postfix)
                             .font(.system(size: 12, weight: .heavy))
+                            .foregroundStyle(.brown)
                         
                         
                     }
@@ -53,33 +58,33 @@ struct BeverageTrends: View {
         }
         
     }
-    var averageOverSevenDays: Double {
-        var total = 0.0
-        var days = 0.0
+    var averageOverSevenDays: Int {
+        var total = 0
+        var days = 0
         for data in sevenDays {
-            total += Double(data[keyPath: keyPath])
+            total += data[keyPath: keyPath]
             days += 1
         }
         return total / days
     }
-    var averageOverThirtyDays: Double {
-        var total = 0.0
-        var days = 0.0
+    var averageOverThirtyDays: Int {
+        var total = 0
+        var days = 0
         for data in thirtyDays {
-            total += Double(data[keyPath: keyPath])
+            total += data[keyPath: keyPath]
             days += 1
         }
         return total / days
     }
     
     
-   
+    
     // decides whether the icon is chevron up or down.
-    func colouredIcon(_ amountLitres: Double  ) -> Image {
-        let tempCast = Double(goal)
+    func chevron(_ amountLitres: Int  ) -> Image {
+        let tempCast = goal
         
         if amountLitres >= tempCast {
-
+            
             return Image(systemName:"chevron.up.circle")
         }
         if amountLitres < tempCast {

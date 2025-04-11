@@ -1,20 +1,19 @@
 //
-//  WaterTrends.swift
+//  MealTrends.swift
 //  iShnakiOS
 //
-//  Created by Huw Williams on 10/04/2025.
+//  Created by Huw Williams on 11/04/2025.
 //
 
 import SwiftUI
 
-struct WaterTrends: View {
+struct MealTrends: View {
     var sevenDays: [UserData]
     var thirtyDays: [UserData]
-    var goal: Int
-    @State private var weekColor: Color = .gray
-    @State private var monthColor: Color = .gray
-    
-    
+    let goal: Int
+    let colour: Color
+    let postfix: String
+    let keyPath: KeyPath<UserData, Int>
     // filtered data is at the bottom of the view
     
     var body: some View {
@@ -27,59 +26,63 @@ struct WaterTrends: View {
                     .font(.system(size: 12, weight: .heavy))
                     .bold()
                 HStack{
-                    colouredIcon(averageOverSevenDays)
+                    chevron(averageOverSevenDays)
+                        .foregroundStyle(colour)
                     VStack(alignment: .leading) {
                         
                         Text("WEEKLY AVG")
-                        Text(String(Int(averageOverSevenDays / 1000)) + "L")
+                            .foregroundStyle(colour)
+                        Text(String(averageOverSevenDays) + postfix)
                             .font(.system(size: 12, weight: .heavy))
+                            .foregroundStyle(colour)
                         
                     }
                     Spacer()
-                    colouredIcon(averageOverThirtyDays)
+                    chevron(averageOverThirtyDays)
+                        .foregroundStyle(colour)
                     VStack(alignment: .leading) {
                         Text("MONTHLY AVG")
-                        Text(String(Int(averageOverThirtyDays / 1000)) + "L")
+                            .foregroundStyle(colour)
+                        Text(String(averageOverThirtyDays) + postfix)
                             .font(.system(size: 12, weight: .heavy))
+                            .foregroundStyle(colour)
                         
                         
                     }
                 }
+                .padding()
                 
             }
-            .padding()
         }
         
     }
-    
-    // these two variables could be changed to Ints.
-    var averageOverSevenDays: Double {
-        var total = 0.0
-        var days = 0.0
+    var averageOverSevenDays: Int {
+        var total = 0
+        var days = 0
         for data in sevenDays {
-            total += Double(data.amountofWater)
+            total += data[keyPath: keyPath]
             days += 1
         }
         return total / days
     }
-    var averageOverThirtyDays: Double {
-        var total = 0.0
-        var days = 0.0
+    var averageOverThirtyDays: Int {
+        var total = 0
+        var days = 0
         for data in thirtyDays {
-            total += Double(data.amountofWater)
+            total += data[keyPath: keyPath]
             days += 1
         }
         return total / days
     }
     
     
-   
+    
     // decides whether the icon is chevron up or down.
-    func colouredIcon(_ amountLitres: Double  ) -> Image {
-        let tempCast = Double(goal)
+    func chevron(_ amountLitres: Int  ) -> Image {
+        let tempCast = goal
         
         if amountLitres >= tempCast {
-
+            
             return Image(systemName:"chevron.up.circle")
         }
         if amountLitres < tempCast {
@@ -92,6 +95,5 @@ struct WaterTrends: View {
     }
 }
 
-#Preview {
-    WaterView()
-}
+
+

@@ -71,7 +71,7 @@ struct HomeView: View {
                             
                             DisplayCard(titleOfCard: "Beverage", goal: existOrReturnZero(goal: defaultGoals.first?.BeverageGoal), image: "cup.and.heat.waves.fill", colour: .brown, data: data.first?.amountofBeverage ?? 0)
                             
-                            DisplayCard(titleOfCard: "Meals", goal: defaultGoals.first?.mealGoal ?? 0, image: "fork.knife", colour: .yellow, data: data.first?.amountofMeal ?? 0)
+                            DisplayCard(titleOfCard: "Meals", goal: defaultGoals.first?.mealGoal ?? 0, image: "fork.knife", colour: lightOrDarkTheme, data: data.first?.amountofMeal ?? 0)
                             DisplayCard(titleOfCard: "Snacks", goal: defaultGoals.first?.snackGoal ?? 0, image: "carrot", colour: .red, data: data.first?.amountofSnack ?? 0)
                             // healthkit needs tp be implemented here *********
                             DisplayCard(titleOfCard: "Steps", goal: defaultGoals.first?.stepGoal ?? 0, image: "figure.walk", colour: .green, data: 3000) //***** fix this
