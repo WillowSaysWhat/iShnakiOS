@@ -53,11 +53,8 @@ struct DisplayCard: View {
         if checkString == "Meals" || checkString == "Snacks" {
             return "/\(goal)"
         }
-        if checkString == "Steps" {
+        if checkString == "Steps" || checkString == "Stairs"{
             return ""
-        }
-        if checkString == "Active" {
-            return " mins"
         }
         else {
             return "ml"

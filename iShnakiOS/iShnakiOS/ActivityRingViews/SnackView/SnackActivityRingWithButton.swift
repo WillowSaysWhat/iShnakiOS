@@ -55,8 +55,11 @@ struct SnackActivityRingWithButton: View {
             }
         }
         .onDisappear {
-            userData.caloriesConsumed += userData.snackCalories
-            try? Context.save()
+            // if the undo button is active then a tap has occured and amount can be saved.
+            if isTapped {
+                userData.caloriesConsumed += userData.snackCalories
+                try? Context.save()
+            }
     }
 }
 }

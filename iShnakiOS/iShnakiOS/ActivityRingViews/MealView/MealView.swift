@@ -15,8 +15,13 @@ struct MealView: View {
     var lightOrDarkTheme: Color {
         colourScheme == .light ? .orange : .yellow
     }
-    // get data
-    @Query private var data: [UserData]
+    // get data today
+    @Query(
+        filter: UserData.todayPredicate(),
+        sort: \UserData.date,
+        order: .reverse
+    )
+    private var data: [UserData]
     @Query private var defaultGoals: [GoalDefaults]
     
     @State private var isTapped: Bool = false
@@ -38,6 +43,7 @@ struct MealView: View {
                     Button("Reset") {
                         data.first?.amountofMeal = 0
                         data.first?.mealCalories = 0
+                        data.first?.caloriesConsumed -= calories
                     }
                     .foregroundStyle(lightOrDarkTheme)
                     
@@ -58,16 +64,18 @@ struct MealView: View {
                                     selectedIndex = index
                                     calories = value[index]
                                 }
-                            Text(String(value[index])+"ml")
+                            Text(String(value[index])+"kcal")
                                 .foregroundColor(selectedIndex == index ? lightOrDarkTheme : .gray)
                         }// ForEach Icon
                         
                         
                     }// VStack with water icons
+                    .padding(.trailing)
                     
                     MealActivityRingWithButton(userData: data.first ?? UserData(), isTapped: $isTapped, goals: defaultGoals.first ?? GoalDefaults(), calories: calories)
+                        
                     //MealActivityRingWithButton(userData: data.first ?? UserData(), isTapped: $isTapped, goals: defaultGoals.first ?? GoalDefaults(), sizeOfWaterContainer: calories)
-                        .padding()
+                        
 
                      
                 } // HStack Icon and Activity Ring
@@ -124,6 +132,9 @@ struct MealView: View {
 
         } // scrollview
     }// some view
+    
+    // history query
+    @Query(sort: \UserData.date, order:.reverse) private var historyData: [UserData]
     
     var last7Days: [UserData] {
             let cutoff = Calendar.current.date(byAdding: .day, value: -6, to: Calendar.current.startOfDay(for: Date()))!

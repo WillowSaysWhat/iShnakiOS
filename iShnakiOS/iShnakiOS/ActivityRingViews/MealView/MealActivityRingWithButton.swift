@@ -54,7 +54,7 @@ struct MealActivityRingWithButton: View {
                 
                
             }
-            
+            .padding()
             .onTapGesture {
                 withAnimation(.easeOut(duration: 0.3)) {
                     userData.amountofMeal += 1
@@ -64,8 +64,11 @@ struct MealActivityRingWithButton: View {
                 }
             }
             .onDisappear {
-                userData.caloriesConsumed += userData.mealCalories
-                try? Context.save()
+                // if the undo button is active then a tap has occured and amount can be saved.
+                if isTapped {
+                    userData.caloriesConsumed += userData.mealCalories
+                    try? Context.save()
+                }
         }
     }
 }

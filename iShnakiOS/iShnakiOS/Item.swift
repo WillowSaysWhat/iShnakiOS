@@ -38,6 +38,19 @@ final class UserData {
         self.amountofMeal = 0
     }
 }
+// fitlers the query so that only today is available.
+extension UserData {
+    static func todayPredicate() -> Predicate<UserData> {
+        let calendar = Calendar.current
+        let startOfToday = calendar.startOfDay(for: Date())
+        let startOfTomorrow = calendar.date(byAdding: .day, value: 1, to: startOfToday)!
+
+        return #Predicate<UserData> { data in
+            data.date >= startOfToday && data.date < startOfTomorrow
+        }
+    }
+}
+
 
 @Model
 final class GoalDefaults {
@@ -54,17 +67,17 @@ final class GoalDefaults {
     var stepGoal: Int
     
     init() {
-        calorieGoal = 2000 // daily intake of an adult
-        waterGoal = 4 // amount of glasses/bottles drunk in a day
-        cupSize = 250 // the size of the water container
-        mealGoal = 3 // breakfast/lunch/dinner
-        snackGoal = 2 // amount of snacks in a day
-        BeverageGoal = 2 // amount of coffee/soda in a day/
-        waterBottleSize = 600 // waterbootle size
-        beverageSize = 270
-        mealSize = 450 
-        snackSize = 270 // calories
-        stepGoal = 5000 // this is half the recommended daily step goal.
+        calorieGoal = 0 // daily intake of an adult
+        waterGoal = 0 // amount of glasses/bottles drunk in a day
+        cupSize = 0 // the size of the water container
+        mealGoal = 0 // breakfast/lunch/dinner
+        snackGoal = 0 // amount of snacks in a day
+        BeverageGoal = 0 // amount of coffee/soda in a day/
+        waterBottleSize = 0 // waterbootle size
+        beverageSize = 0
+        mealSize = 0
+        snackSize = 0 // calories
+        stepGoal = 0 // this is half the recommended daily step goal.
         
     }
 }

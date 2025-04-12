@@ -13,8 +13,8 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     
     
-    @Query private var data: [UserData] // used to make new day if needed.
-    
+    @Query private var data: [UserData]// used to make new day if needed.
+    @Query private var goals: [GoalDefaults]
     
     @State private var newItemText: String = "Home"
     
@@ -40,31 +40,14 @@ struct ContentView: View {
             } else {
                 // Show onboarding screen
                 OnboardingView(hasCompletedOnboarding: $hasCompletedOnboarding)
-                // OnboardingView(hasCompletedOnboarding: $hasCompletedOnboarding)
+                
             }
         }
-        .onAppear {
-                isThisANewDay()
-            }
+       
     }
    
-    func isThisANewDay(){
-        // make timestamp for today
-        let calendar = Calendar.current
-        let startofToday = calendar.startOfDay(for: Date())
-        // tomorrow
-        let startOfTomorrow = calendar.date(byAdding: .day, value: 1, to: startofToday)!
-        // makes this a UserData type if today is present
-        let todayRecord = data.first { $0.date >= startofToday && $0.date < startOfTomorrow }
-        // if todayRecord is empty it adds a new record to swiftdata
-        if todayRecord == nil {
-            print("It's a new day")
-            let newRecord = UserData()
-            modelContext.insert(newRecord)
-        }else {
-            print("Today's record Already exists")
-        }
-    }
+    
+    
 // body
 }// end
 

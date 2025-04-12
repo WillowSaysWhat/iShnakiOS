@@ -11,8 +11,14 @@ import SwiftData
 struct FourActivityRings: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.modelContext) private var defaultGoalsContext
-    // get data
-    @Query private var data: [UserData]
+    // get data for today
+    @Query(
+        filter: UserData.todayPredicate(),
+        sort: \UserData.date,
+        order: .reverse
+    )
+    private var data: [UserData]
+    
     @Query private var defaultGoals: [GoalDefaults]
     let paddingWidth: CGFloat = 150
     var ringWidth: CGFloat = 30

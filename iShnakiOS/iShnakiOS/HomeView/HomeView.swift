@@ -10,14 +10,20 @@ import SwiftData
 
 struct HomeView: View {
     @Environment(\.modelContext) private var modelContext
-    
+    @StateObject var healthkitManager = HealthKitManager()
     // get light/dark theme
     @Environment(\.colorScheme) private var colourScheme
     var lightOrDarkTheme: Color {
         colourScheme == .light ? .red : .green
     }
-    // get data
-    @Query private var data: [UserData]
+    // get filtered data for today
+    @Query(
+        filter: UserData.todayPredicate(),
+        sort: \UserData.date,
+        order: .reverse
+    )
+    private var todayData: [UserData]
+    
     @Query private var defaultGoals: [GoalDefaults]
     
     
@@ -43,17 +49,17 @@ struct HomeView: View {
                             VStack(alignment: .leading, spacing: 8) {
                                 Text("Calories")
                                     .foregroundStyle(.red)
-                                Text(String(data.first?.caloriesConsumed ?? 0))
+                                Text(String(todayData.first?.caloriesConsumed ?? 0))
                                     
                                     .bold()
                                 Text("Water")
                                     .foregroundStyle(.blue)
-                                Text(String(data.first?.amountofWater ?? 0) + "ml")
+                                Text(String(todayData.first?.amountofWater ?? 0) + "ml")
                                     
                                     .bold()
                                 Text("Walking")
                                     .foregroundStyle(.yellow)
-                                Text("2.9km")
+                                Text(String(healthkitManager.todayDistanceWalking / 1000) + "km")
                                     .bold()
                             } // VStack data text (cal, water, steps)
                             .padding(.leading, 10)
@@ -64,33 +70,45 @@ struct HomeView: View {
                         .padding(.bottom)
                         LazyVGrid(columns:Array(repeating: GridItem(spacing: 15), count: 2)) {
                             DisplayCard(titleOfCard: "Water",
-                                        goal: existOrReturnZero(goal: defaultGoals.first?.waterGoal),
+                                        goal: defaultGoals.first?.waterGoal ?? 0,
                                         image: "waterbottle.fill", colour: .blue,
-                                        data: data.first?.amountofWater ?? 0)
+                                        data: todayData.first?.amountofWater ?? 0)
                             
                             
-                            DisplayCard(titleOfCard: "Beverage", goal: existOrReturnZero(goal: defaultGoals.first?.BeverageGoal), image: "cup.and.heat.waves.fill", colour: .brown, data: data.first?.amountofBeverage ?? 0)
+                            DisplayCard(titleOfCard: "Beverage", goal: defaultGoals.first?.BeverageGoal ?? 0, image: "cup.and.heat.waves.fill", colour: .brown, data: todayData.first?.amountofBeverage ?? 0)
                             
-                            DisplayCard(titleOfCard: "Meals", goal: defaultGoals.first?.mealGoal ?? 0, image: "fork.knife", colour: lightOrDarkTheme, data: data.first?.amountofMeal ?? 0)
-                            DisplayCard(titleOfCard: "Snacks", goal: defaultGoals.first?.snackGoal ?? 0, image: "carrot", colour: .red, data: data.first?.amountofSnack ?? 0)
-                            // healthkit needs tp be implemented here *********
-                            DisplayCard(titleOfCard: "Steps", goal: defaultGoals.first?.stepGoal ?? 0, image: "figure.walk", colour: .green, data: 3000) //***** fix this
-                            DisplayCard(titleOfCard: "Active", goal: 0, image: "figure.cooldown", colour: .orange, data: 59)
+                            DisplayCard(titleOfCard: "Meals", goal: defaultGoals.first?.mealGoal ?? 0, image: "fork.knife", colour: lightOrDarkTheme, data: todayData.first?.amountofMeal ?? 0)
+                            DisplayCard(titleOfCard: "Snacks", goal: defaultGoals.first?.snackGoal ?? 0, image: "carrot", colour: .red, data: todayData.first?.amountofSnack ?? 0)
+                            
+                            DisplayCard(titleOfCard: "Steps", goal: defaultGoals.first?.stepGoal ?? 0, image: "figure.walk", colour: .green, data: healthkitManager.todayStepCount)
+                            DisplayCard(titleOfCard: "Stairs", goal: 5, image: "figure.stairs", colour: .orange, data: Int(healthkitManager.todayStairsCount))
                             
                         }
                         .padding()
                     }// first VStack
                     
                 } // ScrollView
+                .onAppear {
+                    isThisANewDay()
+                }
         
     }
     // used in the Display card to ensure that a record is in the DB.
-    func existOrReturnZero(goal: Int?) -> Int {
-        if let thisGoal = goal {
-            return thisGoal
-        } else {
-            print("No Goal Available — using default value of 1")
-            return 1
+    func isThisANewDay(){
+        // make timestamp for today
+        let calendar = Calendar.current
+        let startofToday = calendar.startOfDay(for: Date())
+        // tomorrow
+        let startOfTomorrow = calendar.date(byAdding: .day, value: 1, to: startofToday)!
+        // makes this a UserData type if today is present
+        let todayRecord = todayData.first { $0.date >= startofToday && $0.date < startOfTomorrow }
+        // if todayRecord is empty it adds a new record to swiftdata
+        if todayRecord == nil {
+            print("It's a new day")
+            let newRecord = UserData()
+            modelContext.insert(newRecord)
+        }else {
+            print("Today's record Already exists")
         }
     }
 }

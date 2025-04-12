@@ -11,11 +11,17 @@ import SwiftData
 struct BeverageView: View {
     @Environment(\.modelContext) private var defaultGoalsContext
     // get data
-    @Query private var data: [UserData]
+    @Query(
+        filter: UserData.todayPredicate(),
+        sort: \UserData.date,
+        order: .reverse
+    )
+    private var data: [UserData]
+    
     @Query private var defaultGoals: [GoalDefaults]
     
     @State private var isTapped: Bool = false
-    @State var sizeOfBevContainer: Int = 1000
+    @State var sizeOfBevContainer: Int = 600
     @State var sizeOfBevContainerKcal: Int = 220
     @State private var selectedIndexML: Int? = 0
     @State private var selectedIndexKcal: Int? = 0
@@ -36,6 +42,7 @@ struct BeverageView: View {
                     Button("Reset") {
                         data.first?.amountofBeverage = 0
                         data.first?.beverageCalories = 0
+                        data.first?.caloriesConsumed -= sizeOfBevContainerKcal
                     }// title and icon
                     .foregroundStyle(.brown)
                 } // HStack for title and icon
@@ -137,6 +144,9 @@ struct BeverageView: View {
             
         } // ScrollView
     } // some View
+    // history query
+    @Query(sort: \UserData.date, order:.reverse) private var historyData: [UserData]
+    
     var last7Days: [UserData] {
             let cutoff = Calendar.current.date(byAdding: .day, value: -6, to: Calendar.current.startOfDay(for: Date()))!
             return data

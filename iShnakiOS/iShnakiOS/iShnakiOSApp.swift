@@ -19,9 +19,9 @@ struct iShnakiOSApp: App {
         
         do {
             iShnakContainer = try ModelContainer(for: schema, configurations: config)
-            print(URL.applicationSupportDirectory.path(percentEncoded: false))
+            
         } catch {
-            fatalError("Could not configure container. Error: \(error)")
+            fatalError("Could not configure container. Error")
         }
         
         print(URL.applicationSupportDirectory.path(percentEncoded: false))

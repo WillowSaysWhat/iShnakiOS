@@ -14,7 +14,9 @@ struct WeekView: View {
             Button("Reset Onboarding for now?") {
                 
                 UserDefaults.standard.removeObject(forKey: "hasCompletedOnboarding")
-            }
+                
+            }// button
+            ListOfDailyData()
         }
     }
 }

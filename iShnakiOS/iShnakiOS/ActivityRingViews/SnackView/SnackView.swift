@@ -13,14 +13,20 @@ struct SnackView: View {
     // get theme (light/dark)
     
     // get data
-    @Query private var data: [UserData]
+    @Query(
+        filter: UserData.todayPredicate(),
+        sort: \UserData.date,
+        order: .reverse
+    )
+    private var data: [UserData]
+    
     @Query private var defaultGoals: [GoalDefaults]
     
     @State private var isTapped: Bool = false
     @State var calories: Int = 650
     @State private var selectedIndex: Int? = 1
     
-    private let icons = ["fork.knife.circle.fill", "fork.knife.circle", "fork.knife"]
+    private let icons = ["carrot.fill", "carrot", "carrot"]
     private let value = [800, 650, 450]
     
     var body: some View {
@@ -29,12 +35,13 @@ struct SnackView: View {
                 HStack {
                     Text("Meal Consumption")
                         .font(.system(size: 20, weight: .semibold))
-                    Image(systemName: "fork.knife.circle")
+                    Image(systemName: "carrot")
                         .foregroundColor(.red)
                     Spacer()
                     Button("Reset") {
                         data.first?.amountofSnack = 0
                         data.first?.snackCalories = 0
+                        data.first?.caloriesConsumed -= calories
                     }
                     .foregroundStyle(.red)
                     
@@ -55,7 +62,7 @@ struct SnackView: View {
                                     selectedIndex = index
                                     calories = value[index]
                                 }
-                            Text(String(value[index])+"ml")
+                            Text(String(value[index])+"kcal")
                                 .foregroundColor(selectedIndex == index ? .red : .gray)
                         }// ForEach Icon
                         
@@ -122,6 +129,8 @@ struct SnackView: View {
 
         } // scrollview
     }// some view
+    // history query
+    @Query(sort: \UserData.date, order:.reverse) private var historyData: [UserData]
     
     var last7Days: [UserData] {
             let cutoff = Calendar.current.date(byAdding: .day, value: -6, to: Calendar.current.startOfDay(for: Date()))!

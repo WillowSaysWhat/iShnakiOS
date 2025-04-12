@@ -59,10 +59,10 @@ struct WaterChart7Days: View {
     }
     
     // gets total water
-    var total: Int {
-        var total = 0
+    var total: Double {
+        var total = 0.0
         for data in data {
-            total += data.amountofWater
+            total += Double(data.amountofWater)
         }
         return total
     }

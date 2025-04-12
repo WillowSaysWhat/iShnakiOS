@@ -11,13 +11,23 @@ import Charts
 
 struct WaterView: View {
     @Environment(\.modelContext) private var Context
-    // get data
-    @Query private var data: [UserData]
+    // get data for today only.
+    
+    @Query(
+        filter: UserData.todayPredicate(),
+        sort: \UserData.date,
+        order: .reverse
+    )
+    private var data: [UserData]
+    
+    
+
+    
     @Query private var defaultGoals: [GoalDefaults]
     
     @State private var isTapped: Bool = false
-    @State var sizeOfWaterContainer: Int = 1000
-    @State private var selectedIndex: Int? = 0
+    @State var sizeOfWaterContainer: Int = 250
+    @State private var selectedIndex: Int = 2
     
     private let icons = ["drop.fill", "drop.halffull", "drop"]
     private let value = [1000, 600, 250]
@@ -116,10 +126,13 @@ struct WaterView: View {
 
         } // scrollview
     }// some view
+        
+    // history query
+    @Query(sort: \UserData.date, order:.reverse) private var historyData: [UserData]
     
     var last7Days: [UserData] {
             let cutoff = Calendar.current.date(byAdding: .day, value: -6, to: Calendar.current.startOfDay(for: Date()))!
-            return data
+            return historyData
                 .filter { $0.date >= cutoff }
                 .sorted { $0.date < $1.date }
         }
@@ -127,7 +140,7 @@ struct WaterView: View {
     
     var lastMonth: [UserData] {
             let cutoff = Calendar.current.date(byAdding: .month, value: -1, to: Calendar.current.startOfDay(for: Date()))!
-            return data
+            return historyData
                 .filter { $0.date >= cutoff }
                 .sorted { $0.date < $1.date }
         }
