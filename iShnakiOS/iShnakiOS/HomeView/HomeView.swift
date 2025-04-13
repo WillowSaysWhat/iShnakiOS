@@ -13,8 +13,11 @@ struct HomeView: View {
     @StateObject var healthkitManager = HealthKitManager()
     // get light/dark theme
     @Environment(\.colorScheme) private var colourScheme
-    var lightOrDarkTheme: Color {
+    var lightOrDarkThemeForTitle: Color {
         colourScheme == .light ? .red : .green
+    }
+    var lightOrDarkThemeForYellow: Color {
+        colourScheme == .light ? .orange : .yellow
     }
     // get filtered data for today
     @Query(
@@ -42,7 +45,7 @@ struct HomeView: View {
                             
                             Image(systemName: "house")
                                 .font(.title3)
-                                .foregroundStyle(lightOrDarkTheme)
+                                .foregroundStyle(lightOrDarkThemeForTitle)
                             
                         }
                         HStack {
@@ -58,7 +61,7 @@ struct HomeView: View {
                                     
                                     .bold()
                                 Text("Walking")
-                                    .foregroundStyle(.yellow)
+                                    .foregroundStyle(lightOrDarkThemeForYellow)
                                 Text(String(healthkitManager.todayDistanceWalking / 1000) + "km")
                                     .bold()
                             } // VStack data text (cal, water, steps)
@@ -77,7 +80,7 @@ struct HomeView: View {
                             
                             DisplayCard(titleOfCard: "Beverage", goal: defaultGoals.first?.BeverageGoal ?? 0, image: "cup.and.heat.waves.fill", colour: .brown, data: todayData.first?.amountofBeverage ?? 0)
                             
-                            DisplayCard(titleOfCard: "Meals", goal: defaultGoals.first?.mealGoal ?? 0, image: "fork.knife", colour: lightOrDarkTheme, data: todayData.first?.amountofMeal ?? 0)
+                            DisplayCard(titleOfCard: "Meals", goal: defaultGoals.first?.mealGoal ?? 0, image: "fork.knife", colour: lightOrDarkThemeForTitle, data: todayData.first?.amountofMeal ?? 0)
                             DisplayCard(titleOfCard: "Snacks", goal: defaultGoals.first?.snackGoal ?? 0, image: "carrot", colour: .red, data: todayData.first?.amountofSnack ?? 0)
                             
                             DisplayCard(titleOfCard: "Steps", goal: defaultGoals.first?.stepGoal ?? 0, image: "figure.walk", colour: .green, data: healthkitManager.todayStepCount)

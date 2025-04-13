@@ -14,7 +14,7 @@ struct iShnakiOSApp: App {
     let iShnakContainer: ModelContainer
     
     init(){
-        let schema = Schema([UserData.self, GoalDefaults.self.self])
+        let schema = Schema([UserData.self, GoalDefaults.self, UserNotificationSettings.self])
         let config = ModelConfiguration(schema: schema, url: URL.applicationSupportDirectory.appending(path: "MyiShnakDB.db"))
         
         do {

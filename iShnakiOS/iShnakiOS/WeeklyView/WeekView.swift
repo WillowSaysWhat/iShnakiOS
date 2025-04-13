@@ -8,9 +8,20 @@
 import SwiftUI
 import SwiftData
 struct WeekView: View {
-    @Environment(\.modelContext) private var modelContext
+    
     var body: some View {
-        VStack {
+        VStack(alignment: .leading) {
+            HStack(spacing: 2) {
+                Text ("Summary")
+                    .font(.largeTitle)
+                    .foregroundColor(.primary)
+                    .padding()
+                
+                Image(systemName: "chart.line.uptrend.xyaxis")
+                    .font(.title3)
+                    .foregroundStyle(.blue)
+            }
+            
             Button("Reset Onboarding for now?") {
                 
                 UserDefaults.standard.removeObject(forKey: "hasCompletedOnboarding")

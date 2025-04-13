@@ -11,6 +11,10 @@ import SwiftData
 struct FourActivityRings: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.modelContext) private var defaultGoalsContext
+    @Environment(\.colorScheme) private var colourScheme
+    var lightOrDarkThemeForYellow: Color {
+        colourScheme == .light ? .orange : .yellow
+    }
     // get data for today
     @Query(
         filter: UserData.todayPredicate(),
@@ -92,14 +96,14 @@ struct FourActivityRings: View {
                             ActivityRing(amount: Binding(
                                 get: { today.amountofMeal},
                                 set: { today.amountofMeal = $0 }
-                            ), goal: defaults.mealGoal , colour: .yellow, width: ringWidth, image: "fork.knife")
+                            ), goal: defaults.mealGoal , colour: lightOrDarkThemeForYellow, width: ringWidth, image: "fork.knife")
                             .frame(width: paddingWidth)
                             
                             // Text over activity ring
                             
                             
                         } else {
-                            ActivityRing(amount: .constant(0), goal: 10, colour: .yellow, width: ringWidth, image: "fork.knife")
+                            ActivityRing(amount: .constant(0), goal: 10, colour: lightOrDarkThemeForYellow, width: ringWidth, image: "fork.knife")
                                 .frame(width: paddingWidth)
                         }
                     }

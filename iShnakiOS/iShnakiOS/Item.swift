@@ -82,7 +82,19 @@ final class GoalDefaults {
     }
 }
 
-
+@Model
+final class UserNotificationSettings {
+    var breakfast: [Int]
+    var lunch: [Int]
+    var dinner: [Int]
+    var waterReminder: Int
+    init () {
+        breakfast = [8,0] // 8:00
+        lunch = [13,30] // 13:30
+        dinner = [18,0] // 18:00
+        waterReminder = 120 // every 2 hours
+    }
+}
 
 
 
