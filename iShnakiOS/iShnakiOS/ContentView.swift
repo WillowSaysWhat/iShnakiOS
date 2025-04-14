@@ -13,11 +13,10 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.colorScheme) private var colourScheme
     var lightOrDarkThemeForYellow: Color {
-        colourScheme == .light ? .red : .yellow
+        colourScheme == .light ? .black : .white
     }
     
-    @Query private var data: [UserData]// used to make new day if needed.
-    @Query private var goals: [GoalDefaults]
+    
     
     @State private var newItemText: String = "Home"
     
@@ -61,7 +60,4 @@ struct ContentView: View {
 // body
 }// end
 
-#Preview {
-    ContentView()
-        .modelContainer(for: [UserData.self, GoalDefaults.self], inMemory: false)
-}
+

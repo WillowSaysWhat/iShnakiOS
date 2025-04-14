@@ -15,6 +15,7 @@ struct MealView: View {
     var lightOrDarkTheme: Color {
         colourScheme == .light ? .orange : .yellow
     }
+    
     // get data today
     @Query(
         filter: UserData.todayPredicate(),
@@ -22,6 +23,10 @@ struct MealView: View {
         order: .reverse
     )
     private var data: [UserData]
+    
+    // history query
+    @Query(sort: \UserData.date, order:.reverse) private var historyData: [UserData]
+    // goal query
     @Query private var defaultGoals: [GoalDefaults]
     
     @State private var isTapped: Bool = false
@@ -133,12 +138,11 @@ struct MealView: View {
         } // scrollview
     }// some view
     
-    // history query
-    @Query(sort: \UserData.date, order:.reverse) private var historyData: [UserData]
+
     
     var last7Days: [UserData] {
             let cutoff = Calendar.current.date(byAdding: .day, value: -6, to: Calendar.current.startOfDay(for: Date()))!
-            return data
+            return historyData
                 .filter { $0.date >= cutoff }
                 .sorted { $0.date < $1.date }
         }
@@ -146,7 +150,7 @@ struct MealView: View {
     
     var lastMonth: [UserData] {
             let cutoff = Calendar.current.date(byAdding: .month, value: -1, to: Calendar.current.startOfDay(for: Date()))!
-            return data
+            return historyData
                 .filter { $0.date >= cutoff }
                 .sorted { $0.date < $1.date }
         }

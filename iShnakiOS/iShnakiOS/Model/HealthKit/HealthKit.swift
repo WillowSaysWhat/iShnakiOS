@@ -18,7 +18,7 @@ class HealthKitManager: ObservableObject {
         guard HKHealthStore.isHealthDataAvailable() else { return }
         
         let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount)!
-        let exerciseType = HKQuantityType.quantityType(forIdentifier: .appleExerciseTime)!
+        let exerciseType = HKQuantityType.quantityType(forIdentifier: .distanceWalkingRunning)!
         let stairs = HKQuantityType.quantityType(forIdentifier: .flightsClimbed)!
         let readTypes: Set = [stepType, exerciseType, stairs]
         

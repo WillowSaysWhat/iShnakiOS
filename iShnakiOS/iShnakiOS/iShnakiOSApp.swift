@@ -21,7 +21,7 @@ struct iShnakiOSApp: App {
             iShnakContainer = try ModelContainer(for: schema, configurations: config)
             
         } catch {
-            fatalError("Could not configure container. Error")
+            fatalError("Could not configure container.")
         }
         
         print(URL.applicationSupportDirectory.path(percentEncoded: false))

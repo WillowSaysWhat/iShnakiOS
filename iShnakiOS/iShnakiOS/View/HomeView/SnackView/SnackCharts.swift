@@ -1,5 +1,5 @@
 //
-//  BeverageCharts.swift
+//  SnackCharts.swift
 //  iShnakiOS
 //
 //  Created by Huw Williams on 11/04/2025.
@@ -7,14 +7,15 @@
 
 import SwiftUI
 import Charts
-// I'm not happy that I have not refactored this.
-struct BeverageChart7Days: View {
+
+struct SnackChart7Days: View {
     
     var data: [UserData]
     let title: String = "SEVEN DAYS"
     let keyPath: KeyPath<UserData, Int> // further discovery on my journey to refactoring
-    var colour: Color = .brown
+    var colour: Color
     let postfix: String
+
     
     // filtered data at the bottom of the view
     var body: some View {
@@ -28,7 +29,7 @@ struct BeverageChart7Days: View {
                 Text(title)
                     .font(.system(size: 12, weight: .heavy))
                     .bold()
-                Text(String((total)) + postfix)
+                Text(String(total) + postfix)
                     .font(.system(size: 20, weight: .heavy))
                     .foregroundStyle(colour)
                 
@@ -36,10 +37,10 @@ struct BeverageChart7Days: View {
                     ForEach(data, id: \.date) { entry in
                         BarMark(
                             x: .value("Day", entry.date, unit: .day),
-                            y: .value("Water" + postfix, entry[keyPath: keyPath]), width: 13
+                            y: .value("Snacks", entry[keyPath: keyPath]), width: 13
                         )
-                        .position(by: .value("category", "Water" + postfix))
-                        .foregroundStyle(.brown)
+                        .position(by: .value("category", "Snacks" + postfix))
+                        .foregroundStyle(colour)
                         
                     }
                 }
@@ -62,20 +63,23 @@ struct BeverageChart7Days: View {
     // gets total water
     var total: Int {
         var total = 0
+        
         for data in data {
             total += data[keyPath: keyPath]
+            
         }
-        return total
+        return total 
     }
 }
 
-struct BeverageChartMonth: View {
+struct SnackChartMonth: View {
     var data: [UserData]
     
     let title: String = "LAST MONTH"
-    var colour: Color = .brown
+    var colour: Color
     let keyPath: KeyPath<UserData, Int>
     let postfix: String
+
     // filtered data at the bottom of the view
     var body: some View {
         ZStack {
@@ -87,7 +91,7 @@ struct BeverageChartMonth: View {
                 Text(title)
                     .font(.system(size: 12, weight: .heavy))
                     .bold()
-                Text(String(total / 1000) + postfix)
+                Text(String(total) + postfix)
                     .font(.system(size: 20, weight: .heavy))
                     .foregroundStyle(colour)
                 
@@ -118,17 +122,15 @@ struct BeverageChartMonth: View {
         
     }
     
-  
     // gets total water
-    var total: Double {
-        var total = 0.0
+    var total: Int {
+        var total = 0
+        
         for data in data {
-            total += Double(data[keyPath: keyPath])
+            total += data[keyPath: keyPath]
+            
         }
         return total
     }
 }
 
-#Preview {
-    BeverageView()
-}

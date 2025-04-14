@@ -63,8 +63,11 @@ struct OnboardingView: View {
                         goals.calorieGoal = Int(calories)!
                         goals.stepGoal = Int(StepGoal)!
                         modelContext.insert(goals)
+                        // saves user data and notifications
                         let data = UserData()
+                        let notifications = UserNotificationSettings()
                         modelContext.insert(data)
+                        modelContext.insert(notifications)
                         try modelContext.save()
                         hasCompletedOnboarding = true
                         hideKeyboard()

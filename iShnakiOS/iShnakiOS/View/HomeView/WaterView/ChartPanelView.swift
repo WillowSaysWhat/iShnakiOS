@@ -22,7 +22,6 @@ struct ChartPanelView: View {
                     .bold()
                 Text(String(total ?? 0))
                     .font(.title)
-                
             }
                 
         }

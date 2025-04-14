@@ -10,13 +10,15 @@ import SwiftData
 
 struct BeverageView: View {
     @Environment(\.modelContext) private var defaultGoalsContext
-    // get data
+    // get data for today
     @Query(
         filter: UserData.todayPredicate(),
         sort: \UserData.date,
         order: .reverse
     )
     private var data: [UserData]
+    // query for history
+    @Query(sort: \UserData.date, order:.reverse) private var historyData: [UserData]
     
     @Query private var defaultGoals: [GoalDefaults]
     
@@ -145,11 +147,12 @@ struct BeverageView: View {
         } // ScrollView
     } // some View
     // history query
-    @Query(sort: \UserData.date, order:.reverse) private var historyData: [UserData]
+    
     
     var last7Days: [UserData] {
             let cutoff = Calendar.current.date(byAdding: .day, value: -6, to: Calendar.current.startOfDay(for: Date()))!
-            return data
+        
+            return historyData
                 .filter { $0.date >= cutoff }
                 .sorted { $0.date < $1.date }
         }
@@ -157,7 +160,7 @@ struct BeverageView: View {
     
     var lastMonth: [UserData] {
             let cutoff = Calendar.current.date(byAdding: .month, value: -1, to: Calendar.current.startOfDay(for: Date()))!
-            return data
+            return historyData
                 .filter { $0.date >= cutoff }
                 .sorted { $0.date < $1.date }
         }

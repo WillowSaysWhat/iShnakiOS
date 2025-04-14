@@ -32,7 +32,7 @@ struct DayView: View {
                     HStack {
                         Image(systemName: "calendar")
                         Text(String(day.date.formatted(.dateTime.day().month(.wide).year())))
-                            .foregroundStyle(.white)
+                            .foregroundStyle(.primary)
                             .bold()
                             .font(.headline)
                     }
@@ -46,7 +46,7 @@ struct DayView: View {
                             .bold()
                             .foregroundStyle(.blue)
                         Text(String(day.amountofWater) + "ml")
-                            .foregroundStyle(.white)
+                            .foregroundStyle(.primary)
                         
                         Spacer()
                         
@@ -56,7 +56,7 @@ struct DayView: View {
                             .foregroundStyle(.brown)
                             .bold()
                         Text(String(day.amountofBeverage) + "ml")
-                            .foregroundStyle(.white)
+                            .foregroundStyle(.primary)
                     }
                     .padding()
                     
@@ -67,7 +67,7 @@ struct DayView: View {
                             .foregroundStyle(lightOrDarkThemeForYellow)
                             .bold()
                         Text(String(day.amountofMeal))
-                            .foregroundStyle(.white)
+                            .foregroundStyle(.primary)
                         
                         Spacer()
                         
@@ -77,7 +77,7 @@ struct DayView: View {
                             .foregroundStyle(.red)
                             .bold()
                         Text(String(day.amountofSnack))
-                            .foregroundStyle(.white)
+                            .foregroundStyle(.primary)
                     }
                     .padding()
                     

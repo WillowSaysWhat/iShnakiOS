@@ -1,5 +1,5 @@
 //
-//  WaterView.swift
+//  SnackView.swift
 //  iShnakiOS
 //
 //  Created by Huw Williams on 07/04/2025.
@@ -7,12 +7,12 @@
 
 import SwiftUI
 import SwiftData
-import Charts
 
-struct WaterView: View {
+struct SnackView: View {
     @Environment(\.modelContext) private var Context
-    // get data for today only.
+    // get theme (light/dark)
     
+    // get data
     @Query(
         filter: UserData.todayPredicate(),
         sort: \UserData.date,
@@ -20,31 +20,33 @@ struct WaterView: View {
     )
     private var data: [UserData]
     
-    
-
-    
+    // history query
+    @Query(sort: \UserData.date, order:.reverse) private var historyData: [UserData]
+    // goal query
     @Query private var defaultGoals: [GoalDefaults]
     
     @State private var isTapped: Bool = false
-    @State var sizeOfWaterContainer: Int = 250
-    @State private var selectedIndex: Int = 2
+    @State var calories: Int = 650
+    @State private var selectedIndex: Int? = 1
     
-    private let icons = ["drop.fill", "drop.halffull", "drop"]
-    private let value = [1000, 600, 250]
+    private let icons = ["carrot.fill", "carrot", "carrot"]
+    private let value = [800, 650, 450]
     
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(alignment: .leading) {
                 HStack {
-                    Text("Water Consumption")
+                    Text("Meal Consumption")
                         .font(.system(size: 20, weight: .semibold))
-                    Image(systemName: "drop.fill")
-                        .foregroundColor(.blue)
+                    Image(systemName: "carrot")
+                        .foregroundColor(.red)
                     Spacer()
                     Button("Reset") {
-                        data.first?.amountofWater = 0
+                        data.first?.amountofSnack = 0
+                        data.first?.snackCalories = 0
+                        data.first?.caloriesConsumed -= calories
                     }
-                    
+                    .foregroundStyle(.red)
                     
                 }// HStack Heading
                 .padding()
@@ -58,20 +60,20 @@ struct WaterView: View {
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 35)
-                                .foregroundColor(selectedIndex == index ? .blue : .gray)
+                                .foregroundColor(selectedIndex == index ? .red : .gray)
                                 .onTapGesture {
                                     selectedIndex = index
-                                    sizeOfWaterContainer = value[index]
+                                    calories = value[index]
                                 }
-                            Text(String(value[index])+"ml")
-                                .foregroundColor(selectedIndex == index ? .blue : .gray)
+                            Text(String(value[index])+"kcal")
+                                .foregroundColor(selectedIndex == index ? .red : .gray)
                         }// ForEach Icon
                         
                         
                     }// VStack with water icons
                     
-                    
-                    WaterActivityRingWithButton(userData: data.first ?? UserData(), isTapped: $isTapped, goals: defaultGoals.first ?? GoalDefaults(), sizeOfWaterContainer: sizeOfWaterContainer)
+                    SnackActivityRingWithButton(userData: data.first ?? UserData(), isTapped: $isTapped, goals: defaultGoals.first ?? GoalDefaults(), calories: calories)
+                    //MealActivityRingWithButton(userData: data.first ?? UserData(), isTapped: $isTapped, goals: defaultGoals.first ?? GoalDefaults(), sizeOfWaterContainer: calories)
                         .padding()
 
                      
@@ -88,14 +90,15 @@ struct WaterView: View {
                         .foregroundStyle(.secondary)
                     // undo button
                     Button {
-                        data.first?.amountofWater = max(0, (data.first?.amountofWater ?? 0) - sizeOfWaterContainer) // stops the value going into the negatives.
+                        data.first?.amountofMeal = max(0, (data.first?.amountofMeal ?? 0) - 1) // stops the value going into the negatives.
+                        data.first?.mealCalories = max(0, (data.first?.mealCalories ?? 0) - calories)
 
                         isTapped = false
                     }
                     label: {
                         
                             Image(systemName: "repeat.circle.fill")
-                                .foregroundStyle((isTapped) ? .blue :.gray)
+                            .foregroundStyle((isTapped) ? .red :.gray)
                                 .font(.system(size: 40))
                     }
                     .disabled(!isTapped) // disables the button
@@ -110,25 +113,26 @@ struct WaterView: View {
                     Text("History")
                         .font(.title)
                     Image(systemName: "chart.bar.yaxis")
-                        .foregroundStyle(.blue)
+                        .foregroundStyle(.red)
                     
                     Spacer()
                 }
                                 
-                WaterChart7Days(data: last7Days, keyPath: \.amountofWater) // at the bottom of the view
+                SnackChart7Days(data: last7Days, keyPath: \.amountofSnack, colour: .red, postfix: " snacks") // at the bottom of the view
                 
-                WaterChartMonth(data: lastMonth)
+                SnackChartMonth(data: lastMonth, colour: .red, keyPath: \.amountofSnack, postfix: " snacks")
+                SnackChart7Days(data: last7Days, keyPath: \.snackCalories, colour: .red, postfix: " kcal") // at the bottom of the view
                 
-                WaterTrends(sevenDays: last7Days, thirtyDays: lastMonth, goal: defaultGoals.first?.waterGoal ?? 0)
+                SnackChartMonth(data: lastMonth, colour: .red, keyPath: \.snackCalories, postfix: " kcal")
+                
+                MealTrends(sevenDays: last7Days, thirtyDays: lastMonth, goal: defaultGoals.first?.snackGoal ?? 0, colour: .red, postfix: " snacks a day", keyPath: \.amountofSnack)
                 
             }// history VStack
             .padding(.horizontal)
 
         } // scrollview
     }// some view
-        
-    // history query
-    @Query(sort: \UserData.date, order:.reverse) private var historyData: [UserData]
+
     
     var last7Days: [UserData] {
             let cutoff = Calendar.current.date(byAdding: .day, value: -6, to: Calendar.current.startOfDay(for: Date()))!
@@ -144,13 +148,8 @@ struct WaterView: View {
                 .filter { $0.date >= cutoff }
                 .sorted { $0.date < $1.date }
         }
-} // view
-
-
-
-
+}
 
 #Preview {
-    WaterView()
-        .modelContainer(for: [UserData.self, GoalDefaults.self], inMemory: false)
+    SnackView()
 }

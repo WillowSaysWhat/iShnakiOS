@@ -52,7 +52,10 @@ struct HomeView: View {
                             VStack(alignment: .leading, spacing: 8) {
                                 Text("Calories")
                                     .foregroundStyle(.red)
-                                Text(String(todayData.first?.caloriesConsumed ?? 0))
+                                
+                                    Text(String(todayData.first?.caloriesConsumed ?? 0))
+                                    .bold()
+                            
                                     
                                     .bold()
                                 Text("Water")
@@ -87,7 +90,7 @@ struct HomeView: View {
                             DisplayCard(titleOfCard: "Stairs", goal: 5, image: "figure.stairs", colour: .orange, data: Int(healthkitManager.todayStairsCount))
                             
                         }
-                        .padding()
+                        .padding(10)
                     }// first VStack
                     
                 } // ScrollView
@@ -116,7 +119,8 @@ struct HomeView: View {
     }
 }
 
-#Preview {
-    HomeView()
-        .modelContainer(for: [UserData.self, GoalDefaults.self], inMemory: false)
-}
+
+
+
+
+
