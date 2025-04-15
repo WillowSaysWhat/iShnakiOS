@@ -9,7 +9,7 @@ import Foundation
 import UserNotifications
 
 class Notifications {
-    func requestNotificationPermissions() {
+    static func requestNotificationPermissions() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
             if granted {
                 print("Notification permission granted.")
@@ -18,7 +18,8 @@ class Notifications {
             }
         }
     }
-    func scheduleWaterReminder(every intervalInMin: Int) {
+    static func scheduleWaterReminder(every intervalInMin: Int) {
+        
         let content = UNMutableNotificationContent()
         content.title = "Time to Hydrate"
         content.body = "Remember to drink some water!"
@@ -41,15 +42,15 @@ class Notifications {
             }
         }
     }
-    func scheduleMealReminder(identifier: String, title: String, meal: Array<Int>) {
+    static func scheduleMealReminder(identifier: String, title: String, mealHour: Int, mealMin: Int) {
         let content = UNMutableNotificationContent()
         content.title = title
         content.body = "It's time to eat! 🍽️"
         content.sound = .default
 
         var dateComponents = DateComponents()
-        dateComponents.hour = meal[0]
-        dateComponents.minute = meal[1]
+        dateComponents.hour = mealHour
+        dateComponents.minute = mealMin
 
         let trigger = UNCalendarNotificationTrigger(
             dateMatching: dateComponents,
