@@ -10,10 +10,13 @@ import Foundation
 import SwiftData
 
 // MARK: - Models
+
+// Stores user activity and consumption data for a specific day
 @Model
 final class UserData {
-    @Attribute(.unique) var date: Date
-    // Actuals
+    @Attribute(.unique) var date: Date  // Unique identifier for the day
+    
+    // Actual consumption and activity metrics
     var caloriesConsumed: Int
     var beverageCalories: Int
     var mealCalories: Int
@@ -24,8 +27,8 @@ final class UserData {
     var amountofSnack: Int
     var amountofMeal: Int
     
+    // Default initializer sets all values to zero and uses today’s date
     init() {
-        
         self.date = Calendar.current.startOfDay(for: Date())
         self.caloriesConsumed = 0
         self.beverageCalories = 0
@@ -38,7 +41,8 @@ final class UserData {
         self.amountofMeal = 0
     }
 }
-// fitlers the query so that only today is available.
+
+// Extension for querying only today’s data using a SwiftData predicate
 extension UserData {
     static func todayPredicate() -> Predicate<UserData> {
         let calendar = Calendar.current
@@ -51,7 +55,7 @@ extension UserData {
     }
 }
 
-
+// Stores the user's default health and dietary goals
 @Model
 final class GoalDefaults {
     var calorieGoal: Int
@@ -65,53 +69,53 @@ final class GoalDefaults {
     var mealSize: Int
     var snackSize: Int
     var stepGoal: Int
-    
+
+    // Default initializer sets all goals and sizes to 0
     init() {
-        calorieGoal = 0 // daily intake of an adult
-        waterGoal = 0 // amount of glasses/bottles drunk in a day
-        cupSize = 0 // the size of the water container
-        mealGoal = 0 // breakfast/lunch/dinner
-        snackGoal = 0 // amount of snacks in a day
-        BeverageGoal = 0 // amount of coffee/soda in a day/
-        waterBottleSize = 0 // waterbootle size
-        beverageSize = 0
-        mealSize = 0
-        snackSize = 0 // calories
-        stepGoal = 0 // this is half the recommended daily step goal.
-        
+        calorieGoal = 0                // Daily calorie goal
+        waterGoal = 0                  // Water intake goal
+        cupSize = 0                    // Size of one cup of water
+        mealGoal = 0                   // Meals per day
+        snackGoal = 0                  // Snacks per day
+        BeverageGoal = 0              // Beverages per day
+        waterBottleSize = 0           // Size of water bottle
+        beverageSize = 0              // Size of beverage serving
+        mealSize = 0                  // Calories per meal
+        snackSize = 0                 // Calories per snack
+        stepGoal = 0                  // Steps goal (e.g. 10,000 steps)
     }
 }
 
+// Stores the user’s notification preferences
 @Model
 final class UserNotificationSettings {
     var breakfastHour: Int
     var breakfastMin: Int
     var breakfastBool: Bool
+
     var lunchHour: Int
     var lunchMin: Int
     var lunchBool: Bool
+
     var dinnerHour: Int
     var dinnerMin: Int
     var dinnerBool: Bool
+
     var waterReminder: Int
     var waterReminderBool: Bool
+
+    // Default notification times and toggles
     init () {
-        breakfastHour = 8 // 8:00
+        breakfastHour = 8          // 8:00 AM
         breakfastMin = 0
-        lunchHour = 13 // 13:30
+        lunchHour = 13             // 1:30 PM
         lunchMin = 30
-        dinnerHour = 18// 18:00
+        dinnerHour = 18            // 6:00 PM
         dinnerMin = 0
-        waterReminder = 120 // every 2 hours
+        waterReminder = 120        // Every 2 hours
         breakfastBool = false
         lunchBool = false
         dinnerBool = false
         waterReminderBool = false
     }
 }
-
-
-
-
-
-

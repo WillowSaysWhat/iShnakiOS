@@ -153,8 +153,8 @@ struct ProfileView: View {
                                         title: "",
                                         hour: Binding(get: { settings.dinnerHour },
                                                       set: { settings.dinnerHour = $0 }),
-                                        minute: Binding(get: { settings.dinnerHour },
-                                                        set: { settings.dinnerHour = $0 })
+                                        minute: Binding(get: { settings.dinnerMin },
+                                                        set: { settings.dinnerMin = $0 })
                                     )
                                     ToggleButton(title: "Dinner", colour: lightOrDarkThemeForTitle, isOn: $dinnerToggle)
                                         .onChange(of: dinnerToggle) {
@@ -279,7 +279,7 @@ struct ProfileView: View {
                                     
                                     GoalPickerCard(title: "Beverage Goal",
                                                    unit: "ml",
-                                                   range: stride(from: 1, to: 8, by: 1), icon: "cup.and.heat.waves.fill", colour: .brown,
+                                                   range: stride(from: 100, to: 4000, by: 100), icon: "cup.and.heat.waves.fill", colour: .brown,
                                                    value: Binding(get: { goals.BeverageGoal},
                                                                   set: { goals.BeverageGoal = $0 }),
                                                    onSave: {
@@ -291,7 +291,6 @@ struct ProfileView: View {
                                         }
                                     })
                                     
-                                    .padding()
                                     GoalPickerCard(title: "Meal Goal",
                                                    unit: "",
                                                    range: stride(from: 1, to: 8, by: 1), icon: "fork.knife", colour: lightOrDarkThemeForTitle,
@@ -464,11 +463,11 @@ struct GoalPickerCard: View {
                         
                         Picker(title, selection: $value) {
                             ForEach(Array(range), id: \.self) { val in
-                                Text("\(val) \(unit)").tag(val)
+                                Text("\(String(val))\(unit)").tag(val)
                             }
                         }
                         .pickerStyle(.wheel)
-                        .frame(width: 100, height: 120)
+                        .frame(width: 110, height: 120)
                         
                         Spacer()
                         

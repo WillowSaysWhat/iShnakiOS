@@ -6,7 +6,20 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		0B09CE8B2DAFA6700099D48C /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B09CE8A2DAFA66F0099D48C /* WidgetKit.framework */; };
+		0B09CE8D2DAFA6700099D48C /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B09CE8C2DAFA6700099D48C /* SwiftUI.framework */; };
+		0B2A41FA2DB01575006FAF97 /* iShnackWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 0B09CE882DAFA66F0099D48C /* iShnackWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
+		0B2A41FB2DB01575006FAF97 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0BFD79D92DA3B5A900331BA7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0B09CE872DAFA66F0099D48C;
+			remoteInfo = iShnackWidgetExtension;
+		};
 		0BFD79F62DA3B5AB00331BA7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0BFD79D92DA3B5A900331BA7 /* Project object */;
@@ -23,13 +36,52 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		0B2A41FD2DB01575006FAF97 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				0B2A41FA2DB01575006FAF97 /* iShnackWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		0B09CE882DAFA66F0099D48C /* iShnackWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = iShnackWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		0B09CE8A2DAFA66F0099D48C /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		0B09CE8C2DAFA6700099D48C /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		0B09CEA22DAFE6E90099D48C /* iShnackWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iShnackWidgetExtension.entitlements; sourceTree = "<group>"; };
 		0BFD79E12DA3B5A900331BA7 /* iShnakiOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iShnakiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0BFD79F52DA3B5AB00331BA7 /* iShnakiOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iShnakiOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0BFD79FF2DA3B5AB00331BA7 /* iShnakiOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iShnakiOSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		0B09CE9D2DAFA6710099D48C /* Exceptions for "iShnackWidget" folder in "iShnackWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 0B09CE872DAFA66F0099D48C /* iShnackWidgetExtension */;
+		};
+		0B09CE9F2DAFB5EF0099D48C /* Exceptions for "iShnackWidget" folder in "iShnakiOS" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				iShnackWidget.swift,
+			);
+			target = 0BFD79E02DA3B5A900331BA7 /* iShnakiOS */;
+		};
+		0B09CEA12DAFB6000099D48C /* Exceptions for "iShnakiOS" folder in "iShnackWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Model/Item.swift,
+			);
+			target = 0B09CE872DAFA66F0099D48C /* iShnackWidgetExtension */;
+		};
 		0BFD7A072DA3B5AB00331BA7 /* Exceptions for "iShnakiOS" folder in "iShnakiOS" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -40,10 +92,20 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		0B09CE8E2DAFA6700099D48C /* iShnackWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				0B09CE9F2DAFB5EF0099D48C /* Exceptions for "iShnackWidget" folder in "iShnakiOS" target */,
+				0B09CE9D2DAFA6710099D48C /* Exceptions for "iShnackWidget" folder in "iShnackWidgetExtension" target */,
+			);
+			path = iShnackWidget;
+			sourceTree = "<group>";
+		};
 		0BFD79E32DA3B5A900331BA7 /* iShnakiOS */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				0BFD7A072DA3B5AB00331BA7 /* Exceptions for "iShnakiOS" folder in "iShnakiOS" target */,
+				0B09CEA12DAFB6000099D48C /* Exceptions for "iShnakiOS" folder in "iShnackWidgetExtension" target */,
 			);
 			path = iShnakiOS;
 			sourceTree = "<group>";
@@ -61,6 +123,15 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		0B09CE852DAFA66F0099D48C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0B09CE8D2DAFA6700099D48C /* SwiftUI.framework in Frameworks */,
+				0B09CE8B2DAFA6700099D48C /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		0BFD79DE2DA3B5A900331BA7 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -85,12 +156,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0B09CE892DAFA66F0099D48C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0B09CE8A2DAFA66F0099D48C /* WidgetKit.framework */,
+				0B09CE8C2DAFA6700099D48C /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		0BFD79D82DA3B5A900331BA7 = {
 			isa = PBXGroup;
 			children = (
+				0B09CEA22DAFE6E90099D48C /* iShnackWidgetExtension.entitlements */,
 				0BFD79E32DA3B5A900331BA7 /* iShnakiOS */,
 				0BFD79F82DA3B5AB00331BA7 /* iShnakiOSTests */,
 				0BFD7A022DA3B5AB00331BA7 /* iShnakiOSUITests */,
+				0B09CE8E2DAFA6700099D48C /* iShnackWidget */,
+				0B09CE892DAFA66F0099D48C /* Frameworks */,
 				0BFD79E22DA3B5A900331BA7 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -101,6 +184,7 @@
 				0BFD79E12DA3B5A900331BA7 /* iShnakiOS.app */,
 				0BFD79F52DA3B5AB00331BA7 /* iShnakiOSTests.xctest */,
 				0BFD79FF2DA3B5AB00331BA7 /* iShnakiOSUITests.xctest */,
+				0B09CE882DAFA66F0099D48C /* iShnackWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -108,6 +192,28 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		0B09CE872DAFA66F0099D48C /* iShnackWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0B09CE9C2DAFA6710099D48C /* Build configuration list for PBXNativeTarget "iShnackWidgetExtension" */;
+			buildPhases = (
+				0B09CE842DAFA66F0099D48C /* Sources */,
+				0B09CE852DAFA66F0099D48C /* Frameworks */,
+				0B09CE862DAFA66F0099D48C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				0B09CE8E2DAFA6700099D48C /* iShnackWidget */,
+			);
+			name = iShnackWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = iShnackWidgetExtension;
+			productReference = 0B09CE882DAFA66F0099D48C /* iShnackWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		0BFD79E02DA3B5A900331BA7 /* iShnakiOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0BFD7A082DA3B5AB00331BA7 /* Build configuration list for PBXNativeTarget "iShnakiOS" */;
@@ -115,10 +221,12 @@
 				0BFD79DD2DA3B5A900331BA7 /* Sources */,
 				0BFD79DE2DA3B5A900331BA7 /* Frameworks */,
 				0BFD79DF2DA3B5A900331BA7 /* Resources */,
+				0B2A41FD2DB01575006FAF97 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				0B2A41FC2DB01575006FAF97 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				0BFD79E32DA3B5A900331BA7 /* iShnakiOS */,
@@ -183,9 +291,12 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1620;
+				LastSwiftUpdateCheck = 1630;
 				LastUpgradeCheck = 1630;
 				TargetAttributes = {
+					0B09CE872DAFA66F0099D48C = {
+						CreatedOnToolsVersion = 16.3;
+					};
 					0BFD79E02DA3B5A900331BA7 = {
 						CreatedOnToolsVersion = 16.2;
 					};
@@ -216,11 +327,19 @@
 				0BFD79E02DA3B5A900331BA7 /* iShnakiOS */,
 				0BFD79F42DA3B5AB00331BA7 /* iShnakiOSTests */,
 				0BFD79FE2DA3B5AB00331BA7 /* iShnakiOSUITests */,
+				0B09CE872DAFA66F0099D48C /* iShnackWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		0B09CE862DAFA66F0099D48C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		0BFD79DF2DA3B5A900331BA7 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -245,6 +364,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		0B09CE842DAFA66F0099D48C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		0BFD79DD2DA3B5A900331BA7 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -269,6 +395,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		0B2A41FC2DB01575006FAF97 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0B09CE872DAFA66F0099D48C /* iShnackWidgetExtension */;
+			targetProxy = 0B2A41FB2DB01575006FAF97 /* PBXContainerItemProxy */;
+		};
 		0BFD79F72DA3B5AB00331BA7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 0BFD79E02DA3B5A900331BA7 /* iShnakiOS */;
@@ -282,6 +413,64 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		0B09CE9A2DAFA6710099D48C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = iShnackWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = iShnackWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = iShnackWidget;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = WillowSaysWhat.iShnakiOS.iShnackWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		0B09CE9B2DAFA6710099D48C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = iShnackWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = iShnackWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = iShnackWidget;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = WillowSaysWhat.iShnakiOS.iShnackWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		0BFD7A092DA3B5AB00331BA7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -291,6 +480,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"iShnakiOS/Preview Content\"";
+				DEVELOPMENT_TEAM = 94WNU99F48;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iShnakiOS/Info.plist;
@@ -322,6 +512,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"iShnakiOS/Preview Content\"";
+				DEVELOPMENT_TEAM = 94WNU99F48;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iShnakiOS/Info.plist;
@@ -536,6 +727,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		0B09CE9C2DAFA6710099D48C /* Build configuration list for PBXNativeTarget "iShnackWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0B09CE9A2DAFA6710099D48C /* Debug */,
+				0B09CE9B2DAFA6710099D48C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		0BFD79DC2DA3B5A900331BA7 /* Build configuration list for PBXProject "iShnakiOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

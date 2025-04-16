@@ -1,38 +1,51 @@
 import Foundation
 import HealthKit
 
-@MainActor // this is to prevent the [waek self] warning. this will now run on the main thread.
+@MainActor // Ensures all code in this class runs on the main thread (avoids needing [weak self])
 class HealthKitManager: ObservableObject {
     
-    private let healthStore = HKHealthStore()
+    // MARK: - Properties
     
+    private let healthStore = HKHealthStore() // HealthKit store instance
+    
+    // Published properties to reflect the latest health data in the UI
     @Published var todayStepCount: Int = 0
     @Published var todayStairsCount: TimeInterval = 0
     @Published var todayDistanceWalking: Int = 0
     
+    // MARK: - Init
+    
     init() {
-        requestAuthorization()
+        requestAuthorization() // Request access to HealthKit on init
     }
     
+    // MARK: - Authorization
+    
+    /// Requests read authorization for the desired HealthKit data types
     private func requestAuthorization() {
         guard HKHealthStore.isHealthDataAvailable() else { return }
         
+        // Define the HealthKit quantity types to read (e.g StepCount, KM Walked)
         let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount)!
         let exerciseType = HKQuantityType.quantityType(forIdentifier: .distanceWalkingRunning)!
         let stairs = HKQuantityType.quantityType(forIdentifier: .flightsClimbed)!
+        
         let readTypes: Set = [stepType, exerciseType, stairs]
         
+        // Perform HealthKit authorization request
         Task {
             do {
                 try await healthStore.requestAuthorization(toShare: [], read: readTypes)
                 
-                // call for the function below. Asked Chat Jipperty to refactor.
-                fetchQuantityToday(for: .stepCount, unit: .count()) {
-                    value in self.todayStepCount = Int(value)
+                // Fetch initial values after authorization
+                fetchQuantityToday(for: .stepCount, unit: .count()) { value in
+                    self.todayStepCount = Int(value)
                 }
+                
                 fetchQuantityToday(for: .flightsClimbed, unit: .count()) { value in
                     self.todayStairsCount = value
                 }
+                
                 fetchQuantityToday(for: .distanceWalkingRunning, unit: .meter()) { value in
                     self.todayDistanceWalking = Int(value)
                 }
@@ -43,12 +56,21 @@ class HealthKitManager: ObservableObject {
         }
     }
     
-    func fetchQuantityToday(for identifier: HKQuantityTypeIdentifier,unit: HKUnit, resultHandler: @escaping (Double) -> Void) {
+    // MARK: - Data Fetching
+    
+    /// Fetches cumulative quantity for today for the given HealthKit identifier and unit
+    func fetchQuantityToday(
+        for identifier: HKQuantityTypeIdentifier,
+        unit: HKUnit,
+        resultHandler: @escaping (Double) -> Void
+    ) {
+        // Get the quantity type from the identifier
         guard let quantityType = HKQuantityType.quantityType(forIdentifier: identifier) else {
             print("Invalid quantity type: \(identifier)")
             return
         }
 
+        // Define start and end times (today's date)
         let startOfDay = Calendar.current.startOfDay(for: Date())
         let predicate = HKQuery.predicateForSamples(
             withStart: startOfDay,
@@ -56,6 +78,7 @@ class HealthKitManager: ObservableObject {
             options: .strictStartDate
         )
 
+        // Create a statistics query for the cumulative sum
         let query = HKStatisticsQuery(
             quantityType: quantityType,
             quantitySamplePredicate: predicate,
@@ -72,8 +95,8 @@ class HealthKitManager: ObservableObject {
             }
         }
 
+        // Execute the query
         healthStore.execute(query)
     }
-
     
 }

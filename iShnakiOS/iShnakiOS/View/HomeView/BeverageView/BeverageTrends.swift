@@ -8,56 +8,70 @@
 import SwiftUI
 
 struct BeverageTrends: View {
+    // MARK: - Properties
+    
+    // Array of last 7 days of data
     var sevenDays: [UserData]
+    
+    // Array of last 30 days of data
     var thirtyDays: [UserData]
+    
+    // The user's daily goal for beverage intake (e.g. 2000 ml)
     let goal: Int
+    
+    // Unit suffix (e.g. "ml", "kcal") used in labels
     let postfix: String
+    
+    // KeyPath to determine which property of `UserData` we're measuring (e.g. amountofBeverage)
     let keyPath: KeyPath<UserData, Int>
-    
-    
-    
-    // filtered data is at the bottom of the view
-    
+
+    // MARK: - View Body
     var body: some View {
-        
         ZStack {
+            // Background color and styling
             Color(uiColor: .systemGray6)
                 .cornerRadius(15)
-            VStack(alignment: .leading){
+            
+            VStack(alignment: .leading) {
+                // Header
                 Text("Trends")
                     .font(.system(size: 12, weight: .heavy))
                     .bold()
-                HStack{
+                
+                // Weekly and Monthly trend comparison
+                HStack {
+                    // Chevron showing direction vs goal
                     chevron(averageOverSevenDays)
                         .foregroundStyle(.brown)
+                    
                     VStack(alignment: .leading) {
-                        
                         Text("WEEKLY AVG")
                             .foregroundStyle(.brown)
                         Text(String(averageOverSevenDays) + postfix)
                             .font(.system(size: 12, weight: .heavy))
                             .foregroundStyle(.brown)
-                        
                     }
+                    
                     Spacer()
+                    
+                    // Chevron showing direction vs goal
                     chevron(averageOverThirtyDays)
                         .foregroundStyle(.brown)
+                    
                     VStack(alignment: .leading) {
                         Text("MONTHLY AVG")
                             .foregroundStyle(.brown)
                         Text(String(averageOverThirtyDays) + postfix)
                             .font(.system(size: 12, weight: .heavy))
                             .foregroundStyle(.brown)
-                        
-                        
                     }
                 }
                 .padding()
-                
             }
         }
-        
     }
+    
+    // MARK: - Weekly Average Calculation
     var averageOverSevenDays: Int {
         var total = 0
         var days = 0
@@ -67,6 +81,8 @@ struct BeverageTrends: View {
         }
         return total / days
     }
+
+    // MARK: - Monthly Average Calculation
     var averageOverThirtyDays: Int {
         var total = 0
         var days = 0
@@ -76,24 +92,21 @@ struct BeverageTrends: View {
         }
         return total / days
     }
-    
-    
-    
-    // decides whether the icon is chevron up or down.
-    func chevron(_ amountLitres: Int  ) -> Image {
+
+    // MARK: - Chevron Indicator
+    /// Returns an icon indicating if the average is above or below the goal.
+    func chevron(_ amountLitres: Int) -> Image {
         let tempCast = goal
         
         if amountLitres >= tempCast {
-            
             return Image(systemName:"chevron.up.circle")
         }
+        
         if amountLitres < tempCast {
-            
             return Image(systemName: "chevron.down.circle")
-            
-        } else {
-            return Image(systemName: "exclamationmark.circle")
         }
+        
+        return Image(systemName: "exclamationmark.circle") // fallback
     }
 }
 

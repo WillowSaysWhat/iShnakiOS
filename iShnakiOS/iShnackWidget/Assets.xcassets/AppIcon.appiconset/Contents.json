@@ -1,7 +1,6 @@
 {
   "images" : [
     {
-      "filename" : "iShnakDark.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
@@ -24,7 +23,6 @@
           "value" : "tinted"
         }
       ],
-      "filename" : "iShnakLight.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"

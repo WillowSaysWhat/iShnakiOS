@@ -9,36 +9,42 @@ import SwiftUI
 import SwiftData
 
 struct MealView: View {
-    @Environment(\.modelContext) private var Context
-    // get theme (light/dark)
-    @Environment(\.colorScheme) private var colourScheme
+    @Environment(\.modelContext) private var Context // Access to SwiftData context
+    @Environment(\.colorScheme) private var colourScheme // Light/dark mode
+
+    // Adjusts the theme color based on the current appearance
     var lightOrDarkTheme: Color {
         colourScheme == .light ? .orange : .yellow
     }
-    
-    // get data today
+
+    // Query: Fetch today's UserData
     @Query(
         filter: UserData.todayPredicate(),
         sort: \UserData.date,
         order: .reverse
     )
     private var data: [UserData]
-    
-    // history query
+
+    // Query: Fetch full history of UserData (descending)
     @Query(sort: \UserData.date, order:.reverse) private var historyData: [UserData]
-    // goal query
+    
+    // Query: Fetch user's default goals
     @Query private var defaultGoals: [GoalDefaults]
     
+    // UI state
     @State private var isTapped: Bool = false
     @State var calories: Int = 650
     @State private var selectedIndex: Int? = 1
-    
+
+    // Meal size options
     private let icons = ["fork.knife.circle.fill", "fork.knife.circle", "fork.knife"]
     private let value = [800, 650, 450]
     
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(alignment: .leading) {
+                
+                // Header
                 HStack {
                     Text("Meal Consumption")
                         .font(.system(size: 20, weight: .semibold))
@@ -46,19 +52,19 @@ struct MealView: View {
                         .foregroundColor(lightOrDarkTheme)
                     Spacer()
                     Button("Reset") {
+                        // Resets today’s meal data
                         data.first?.amountofMeal = 0
                         data.first?.mealCalories = 0
                         data.first?.caloriesConsumed -= calories
                     }
                     .foregroundStyle(lightOrDarkTheme)
-                    
-                }// HStack Heading
+                }
                 .padding()
-                              
                 
-                HStack { // Icons and activity ring
-                    VStack(spacing: 13){
-                        // This is the 3 water icons with tap feature
+                // Meal selection + ring
+                HStack {
+                    // Icon column
+                    VStack(spacing: 13) {
                         ForEach(0..<3) { index in
                             Image(systemName: icons[index])
                                 .resizable()
@@ -69,24 +75,23 @@ struct MealView: View {
                                     selectedIndex = index
                                     calories = value[index]
                                 }
-                            Text(String(value[index])+"kcal")
+                            Text(String(value[index]) + "kcal")
                                 .foregroundColor(selectedIndex == index ? lightOrDarkTheme : .gray)
-                        }// ForEach Icon
-                        
-                        
-                    }// VStack with water icons
+                        }
+                    }
                     .padding(.trailing)
                     
-                    MealActivityRingWithButton(userData: data.first ?? UserData(), isTapped: $isTapped, goals: defaultGoals.first ?? GoalDefaults(), calories: calories)
-                        
-                    //MealActivityRingWithButton(userData: data.first ?? UserData(), isTapped: $isTapped, goals: defaultGoals.first ?? GoalDefaults(), sizeOfWaterContainer: calories)
-                        
-
-                     
-                } // HStack Icon and Activity Ring
+                    // Ring with tap-to-log functionality
+                    MealActivityRingWithButton(
+                        userData: data.first ?? UserData(),
+                        isTapped: $isTapped,
+                        goals: defaultGoals.first ?? GoalDefaults(),
+                        calories: calories
+                    )
+                }
                 
+                // Undo row
                 HStack {
-                    
                     Text("Tap the BIG circle to input")
                         .foregroundStyle(.primary)
                         .padding(.leading)
@@ -94,66 +99,68 @@ struct MealView: View {
                     Text("UNDO")
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
-                    // undo button
                     Button {
-                        data.first?.amountofMeal = max(0, (data.first?.amountofMeal ?? 0) - 1) // stops the value going into the negatives.
+                        // Undo last meal input
+                        data.first?.amountofMeal = max(0, (data.first?.amountofMeal ?? 0) - 1)
                         data.first?.mealCalories = max(0, (data.first?.mealCalories ?? 0) - calories)
-
                         isTapped = false
+                    } label: {
+                        Image(systemName: "repeat.circle.fill")
+                            .foregroundStyle(isTapped ? lightOrDarkTheme : .gray)
+                            .font(.system(size: 40))
                     }
-                    label: {
-                        
-                            Image(systemName: "repeat.circle.fill")
-                                .foregroundStyle((isTapped) ? lightOrDarkTheme :.gray)
-                                .font(.system(size: 40))
-                    }
-                    .disabled(!isTapped) // disables the button
-                } // undo last drink HStack
+                    .disabled(!isTapped)
+                }
                 .padding(.trailing)
-            } // Top VStack
+            }
             .padding()
             
-            
-            VStack { // History
+            // Meal history and charts
+            VStack {
                 HStack {
                     Text("History")
                         .font(.title)
                     Image(systemName: "chart.bar.yaxis")
                         .foregroundStyle(lightOrDarkTheme)
-                    
                     Spacer()
                 }
-                                
-                MealChart7Days(data: last7Days, keyPath: \.amountofMeal, colour: lightOrDarkTheme, postfix: " meals") // at the bottom of the view
+                
+                // Weekly & Monthly charts for meals + calories
+                MealChart7Days(data: last7Days, keyPath: \.amountofMeal, colour: lightOrDarkTheme, postfix: " meals")
                 MealChartMonth(data: lastMonth, colour: lightOrDarkTheme, keyPath: \.amountofMeal, postfix: " meals")
                 
-                MealChart7Days(data: last7Days, keyPath: \.mealCalories, colour: lightOrDarkTheme, postfix: " kcal ") // at the bottom of the view
+                MealChart7Days(data: last7Days, keyPath: \.mealCalories, colour: lightOrDarkTheme, postfix: " kcal ")
                 MealChartMonth(data: lastMonth, colour: lightOrDarkTheme, keyPath: \.mealCalories, postfix: " kcal ")
                 
-                MealTrends(sevenDays: last7Days, thirtyDays: lastMonth, goal: defaultGoals.first?.mealGoal ?? 0, colour: lightOrDarkTheme, postfix: " meals a day", keyPath: \.amountofMeal)
-                
-            }// history VStack
+                // Trends
+                MealTrends(
+                    sevenDays: last7Days,
+                    thirtyDays: lastMonth,
+                    goal: defaultGoals.first?.mealGoal ?? 0,
+                    colour: lightOrDarkTheme,
+                    postfix: " meals a day",
+                    keyPath: \.amountofMeal
+                )
+            }
             .padding(.horizontal)
+        }
+    }
 
-        } // scrollview
-    }// some view
-    
-
-    
+    // Last 7 days of meal data
     var last7Days: [UserData] {
-            let cutoff = Calendar.current.date(byAdding: .day, value: -6, to: Calendar.current.startOfDay(for: Date()))!
-            return historyData
-                .filter { $0.date >= cutoff }
-                .sorted { $0.date < $1.date }
-        }
-    
-    
+        let cutoff = Calendar.current.date(byAdding: .day, value: -6, to: Calendar.current.startOfDay(for: Date()))!
+        return historyData
+            .filter { $0.date >= cutoff }
+            .sorted { $0.date < $1.date }
+    }
+
+    // Last 30 days of meal data
     var lastMonth: [UserData] {
-            let cutoff = Calendar.current.date(byAdding: .month, value: -1, to: Calendar.current.startOfDay(for: Date()))!
-            return historyData
-                .filter { $0.date >= cutoff }
-                .sorted { $0.date < $1.date }
-        }
+        let cutoff = Calendar.current.date(byAdding: .month, value: -1, to: Calendar.current.startOfDay(for: Date()))!
+        return historyData
+            .filter { $0.date >= cutoff }
+            .sorted { $0.date < $1.date }
+    }
 }
 
 #Preview {

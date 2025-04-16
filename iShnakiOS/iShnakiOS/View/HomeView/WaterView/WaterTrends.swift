@@ -8,56 +8,61 @@
 import SwiftUI
 
 struct WaterTrends: View {
-    var sevenDays: [UserData]
-    var thirtyDays: [UserData]
-    var goal: Int
+    var sevenDays: [UserData] // Data for the past 7 days
+    var thirtyDays: [UserData] // Data for the past 30 days
+    var goal: Int // Daily water goal in ml
+    
+    // Not currently used, but could be leveraged for UI feedback
     @State private var weekColor: Color = .gray
     @State private var monthColor: Color = .gray
     
-    
-    // filtered data is at the bottom of the view
-    
     var body: some View {
-        
         ZStack {
+            // Card background
             Color(uiColor: .systemGray6)
                 .cornerRadius(15)
-            VStack(alignment: .leading){
+            
+            VStack(alignment: .leading) {
+                // Title
                 Text("Trends")
                     .font(.system(size: 12, weight: .heavy))
                     .bold()
-                HStack{
+                
+                HStack {
+                    // Weekly average icon
                     colouredIcon(averageOverSevenDays)
                         .foregroundStyle(.blue)
+                    
                     VStack(alignment: .leading) {
-                        
                         Text("WEEKLY AVG")
                             .foregroundStyle(.blue)
+                        // Weekly average converted to L
                         Text(String(Int(averageOverSevenDays / 1000)) + "L")
                             .font(.system(size: 12, weight: .heavy))
                             .foregroundStyle(.blue)
-                        
                     }
+                    
                     Spacer()
+                    
+                    // Monthly average icon
                     colouredIcon(averageOverThirtyDays)
                         .foregroundStyle(.blue)
+                    
                     VStack(alignment: .leading) {
                         Text("MONTHLY AVG")
                             .foregroundStyle(.blue)
+                        // Monthly average converted to L
                         Text(String(Int(averageOverThirtyDays / 1000)) + "L")
                             .font(.system(size: 12, weight: .heavy))
                             .foregroundStyle(.blue)
                     }
                 }
-                
             }
-            
         }
         .padding()
-        
     }
     
-    // these two variables could be changed to Ints.
+    // MARK: - Compute 7-day average water intake (in ml)
     var averageOverSevenDays: Int {
         var total = 0
         var days = 0
@@ -67,6 +72,8 @@ struct WaterTrends: View {
         }
         return total / days
     }
+
+    // MARK: - Compute 30-day average water intake (in ml)
     var averageOverThirtyDays: Int {
         var total = 0
         var days = 0
@@ -77,20 +84,15 @@ struct WaterTrends: View {
         return total / days
     }
     
-    
-   
-    // decides whether the icon is chevron up or down.
-    func colouredIcon(_ amountLitres: Int  ) -> Image {
+    // MARK: - Icon indicating if average meets goal
+    func colouredIcon(_ amountLitres: Int) -> Image {
         let tempCast = goal
         
         if amountLitres >= tempCast {
-
             return Image(systemName:"chevron.up.circle")
         }
         if amountLitres < tempCast {
-            
             return Image(systemName: "chevron.down.circle")
-            
         } else {
             return Image(systemName: "exclamationmark.circle")
         }
