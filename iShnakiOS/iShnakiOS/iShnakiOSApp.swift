@@ -36,12 +36,18 @@ struct iShnakiOSApp: App {
         if let url = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.iShnak.shared") {
             print("Shared container is at: \(url.path())")
         }
+        
     }
 
     var body: some Scene {
         WindowGroup {
             // Launch the main ContentView
             ContentView()
+//                .task { // seed data
+//                        let context = ModelContext(iShnakContainer)
+//                        seedUserData(context: context)
+//                            
+//                }
         }
         // Inject the configured SwiftData model container into the app environment
         .modelContainer(iShnakContainer)

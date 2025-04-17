@@ -119,3 +119,33 @@ final class UserNotificationSettings {
         waterReminderBool = false
     }
 }
+
+func seedUserData(context: ModelContext) {
+    let calendar = Calendar.current
+    let today = calendar.startOfDay(for: Date())
+
+    for dayOffset in 1...30 {
+        let date = calendar.date(byAdding: .day, value: -dayOffset, to: today)!
+        let userData = UserData()
+        userData.date = date
+        userData.amountofWater = Int.random(in: 1000...3000)
+        userData.amountofBeverage = Int.random(in: 200...1000)
+        userData.amountofMeal = Int.random(in: 2...4)
+        userData.amountofSnack = Int.random(in: 1...3)
+        userData.stepsTaken = Int.random(in: 1000...10000)
+        userData.amountofMeal = Int.random(in: 2...4)
+        userData.mealCalories = userData.amountofMeal * Int.random(in: 400...700)
+        userData.snackCalories = userData.amountofSnack * Int.random(in: 100...300)
+        userData.beverageCalories = userData.amountofBeverage / 10
+        userData.caloriesConsumed = userData.mealCalories + userData.snackCalories + userData.beverageCalories
+
+        context.insert(userData)
+    }
+
+    do {
+        try context.save()
+        print("Seeded 30 days of UserData.")
+    } catch {
+        print("Failed to seed UserData: \(error)")
+    }
+}

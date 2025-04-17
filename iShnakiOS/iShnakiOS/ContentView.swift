@@ -30,6 +30,7 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             if hasCompletedOnboarding {
+                
                 // Show main app content via TabView
                 TabView(selection: $newItemText) {
                     
