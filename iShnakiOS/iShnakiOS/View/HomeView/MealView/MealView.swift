@@ -21,12 +21,13 @@ struct MealView: View {
     @Query(
         filter: UserData.todayPredicate(),
         sort: \UserData.date,
-        order: .reverse
+        order: .reverse,
+        animation: .bouncy
     )
     private var data: [UserData]
 
     // Query: Fetch full history of UserData (descending)
-    @Query(sort: \UserData.date, order:.reverse) private var historyData: [UserData]
+    @Query(sort: \UserData.date, order:.reverse,  animation: .bouncy) private var historyData: [UserData]
     
     // Query: Fetch user's default goals
     @Query private var defaultGoals: [GoalDefaults]

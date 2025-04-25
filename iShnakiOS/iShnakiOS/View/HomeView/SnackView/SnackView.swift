@@ -20,7 +20,7 @@ struct SnackView: View {
     private var data: [UserData]
 
     // Full user data history sorted newest first
-    @Query(sort: \UserData.date, order:.reverse) private var historyData: [UserData]
+    @Query(sort: \UserData.date, order:.reverse,  animation: .bouncy) private var historyData: [UserData]
     
     // User-defined snack goals
     @Query private var defaultGoals: [GoalDefaults]

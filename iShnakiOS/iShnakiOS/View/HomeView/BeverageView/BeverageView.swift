@@ -17,12 +17,13 @@ struct BeverageView: View {
     @Query(
         filter: UserData.todayPredicate(),
         sort: \UserData.date,
-        order: .reverse
+        order: .reverse,
+        animation: .bouncy
     )
     private var data: [UserData]
     
     // Fetch all historical UserData entries (for charts)
-    @Query(sort: \UserData.date, order:.reverse) private var historyData: [UserData]
+    @Query(sort: \UserData.date, order:.reverse,  animation: .bouncy) private var historyData: [UserData]
     
     // Get the user's default goal settings
     @Query private var defaultGoals: [GoalDefaults]

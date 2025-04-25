@@ -14,11 +14,11 @@ struct WaterView: View {
 
     // Query today's data
     @Query(
-        filter: UserData.todayPredicate(), sort: \UserData.date, order: .reverse
+        filter: UserData.todayPredicate(), sort: \UserData.date, order: .reverse,  animation: .bouncy
     ) private var data: [UserData]
 
     // Full history of UserData
-    @Query(sort: \UserData.date, order:.reverse) private var historyData: [UserData]
+    @Query(sort: \UserData.date, order:.reverse,  animation: .bouncy) private var historyData: [UserData]
 
     // User's goal data
     @Query private var defaultGoals: [GoalDefaults]
@@ -45,6 +45,7 @@ struct WaterView: View {
                     Button("Reset") {
                         data.first?.amountofWater = 0
                     }
+                    .accessibilityIdentifier("ResetButton")
                 }
                 .padding()
                 
@@ -58,6 +59,7 @@ struct WaterView: View {
                                 .scaledToFit()
                                 .frame(width: 35)
                                 .foregroundColor(selectedIndex == index ? .blue : .gray)
+                                .accessibilityIdentifier("waterIcon_\(icons[index])")
                                 .onTapGesture {
                                     selectedIndex = index
                                     sizeOfWaterContainer = value[index]
@@ -75,6 +77,7 @@ struct WaterView: View {
                         sizeOfWaterContainer: sizeOfWaterContainer
                     )
                     .padding()
+                    .accessibilityIdentifier("WaterRing")
                 }
 
                 // Undo button
@@ -95,6 +98,7 @@ struct WaterView: View {
                             .foregroundStyle((isTapped) ? .blue : .gray)
                             .font(.system(size: 40))
                     }
+                    .accessibilityIdentifier("UndoButton")
                     .disabled(!isTapped)
                 }
                 .padding(.trailing)

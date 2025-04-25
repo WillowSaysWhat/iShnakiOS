@@ -1,3 +1,34 @@
+# Four Activity Rings
+
+The `FourActivityRings` view provides a compact yet visually rich representation of the user's progress across four key daily health metrics: `Water`, `Beverages`, `Meals`, and `Snacks`. These are displayed using animated circular progress rings that serve both as progress indicators and navigation elements.
+
+__Layout and Structure__
+The rings are arranged in two horizontal rows of two, using two `HStacks` wrapped in a `VStack`. This layout ensures clarity and a balanced visual structure.
+
+Each ring is wrapped in a `NavigationLink`, allowing the user to tap on any ring to go directly to the corresponding detailed view (`WaterView`, `BeverageView`, etc.) for logging and reviewing history.
+
+---
+
+__Data Integration__
+* The view uses SwiftData queries to fetch:
+  * The current day’s user data (UserData)
+  * The default goal values (GoalDefaults)
+
+* It uses SwiftUI Binding to reflect and update the actual data in real time. When a ring is tapped and data is modified in the detail view, the changes are reflected back in the rings.
+
+__Customization__
+
+* Each ring is color-coded for its category:
+  * Blue for Water
+  * Brown for Beverages
+  * Yellow/Orange for Meals (adapted to light/dark mode)
+  * Red for Snacks
+
+* The ring component (`ActivityRing`) is reused with dynamic values and icons (e.g., `water bottle`, `cup`, `fork`, `carrot`), allowing consistent behavior and style across categories.
+
+
+
+```swift
 //
 //  FourActivityRings.swift
 //  iShnakiOS
@@ -126,3 +157,8 @@ struct FourActivityRings: View {
     FourActivityRings()
         .modelContainer(for: [UserData.self, GoalDefaults.self], inMemory: false)
 }
+
+```
+
+__Purpose__
+The `FourActivityRings` view offers a quick visual snapshot of the user’s daily progress and encourages engagement through tappable and animated UI elements. It balances function and aesthetics, making it easy for users to track habits and access logging screens from a single, intuitive interface.
