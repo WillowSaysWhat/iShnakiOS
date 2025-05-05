@@ -1,5 +1,5 @@
 <p align="center">
-<image src="images/iShnakbanner.gif"/>
+<image src="images/iShnakBanner.gif"/>
 </p>
 
 # iShnak iOS
